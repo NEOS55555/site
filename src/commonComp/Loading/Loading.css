@@ -1,0 +1,30 @@
+.canvas-back {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	/*background-color: #000000;*/
+}
+.canvas-back.op1 {
+  animation: op1 .2s;
+}
+.canvas-back.op0 {
+  animation: op0 .2s;
+}
+@keyframes op1 {
+  from {
+    opacity: 0
+  }
+  to{
+    transform: 1
+  }
+}
+@keyframes op0 {
+  from {
+    opacity: 1
+  }
+  to{
+    transform: 0
+  }
+}

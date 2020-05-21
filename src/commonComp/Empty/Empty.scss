@@ -1,0 +1,15 @@
+
+.no-data {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	img {
+  	 animation: $orb 15s linear infinite; 
+		width: 300px;
+	}
+	span {
+		color: #fff;
+	}
+}
+

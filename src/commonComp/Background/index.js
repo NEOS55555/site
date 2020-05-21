@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './bg.scss'
+import ReactDOM from 'react-dom';
 
 class Backgound extends Component {
   render () {
@@ -21,5 +22,11 @@ class Backgound extends Component {
     )
   }
 }
+let div = document.createElement('div');
+document.body.appendChild(div);
+ 
+let background = ReactDOM.render(React.createElement(
+  Backgound,
+), div);
 
-export default Backgound
+export default background
