@@ -1,0 +1,14 @@
+$red: red;
+$orb: orb;
+$borderColor: rgb(96, 100, 109);
+$shadowColor: #95c3e8;
+$fontColor: #fff;
+$hoverColor: #40a9ff;
+@keyframes orb {
+  from {
+    transform:rotate(0deg)
+  }
+  to{
+    transform:rotate(-360deg)
+  }
+}
