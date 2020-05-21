@@ -1,4 +1,5 @@
 .site-item {
+	transform: scale(0.95);
 	padding: 20px;
   width: 100%;
   border-radius: 4px;
@@ -9,7 +10,7 @@
 		font-size: 18px;
     font-weight: 600;
     /*color: #1a1a1a;*/
-    color: #fff;
+    color: $fontColor;
     line-height: 1.6;
     margin: 0;
     padding: 5px 0;
@@ -26,7 +27,7 @@
 	.rich-head {
 		display: inline-block;
 		overflow: hidden;
-		color: #fff;
+		color: $fontColor;
 		.anticon svg {
 			width: 14px;
 		}
@@ -35,7 +36,7 @@
 		}
 	}
 	.rich-content {
-		cursor: pointer;
+		/*cursor: pointer;*/
 		/*display: flex;*/
 		.rich-content-cover {
 			margin-top: 1rem;
@@ -50,20 +51,39 @@
 			}
 		}
 
-		
 		.rich-content-text {
 			/*color: #000;*/
-			color: #fff;
+			color: $fontColor;
 			width: 100%;
 		}
 		.rich-content-text:hover {
 			/*color: #646464;*/
 		}
+		.rich-footer {
+			margin-top: 1rem;
+			color: $fontColor;
+			ul {
+				margin: 0;
+				li {
+					/*display: inline-block;*/
+					a {
+						color: $fontColor;
+						text-decoration: underline;
+					}
+					a:hover {
+						color: $hoverColor;
+					}
+				}
+				li:not(:last-child) {
+					margin-right: 5px;
+				}
+			}
+		}
 	}
 }
 
 .site-item:hover {
-	transform: scale(1.05);
+	transform: scale(1);
   box-shadow: 1px 1px 94px #afd4f3;
   /*animation: shadow 2s linear infinite;*/
 

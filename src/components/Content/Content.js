@@ -2,7 +2,10 @@ import React, {PureComponent, Fragment} from 'react';
 import SiteItem from '@/commonComp/SiteItem'
 // import DelModal from '@/commonComp/DelModal'
 // import { delSite } from '@/store/actions'
-import { Pagination, Empty } from 'antd'
+import { Pagination } from 'antd'
+import Empty from '@/commonComp/Empty'
+
+
 import './Content.scss';
 
 class Content extends PureComponent {
@@ -13,7 +16,7 @@ class Content extends PureComponent {
   render () {
   	// const { visible, confirmLoading } = this.state;
   	const {list=[], total, current, pageSize, onChange, onShowSizeChange, isSystem} = this.props;
-  	console.log(current)
+  	// console.log(current)
   	return (
   		<Fragment>
   			{

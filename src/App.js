@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
-import ComContent from './components/SystemComp/ComContent'
-import SystemComp from './components/SystemComp/SystemComp'
+// import ComContent from './components/SystemComp/ComContent'
+import SystemComp from './components/SystemComp'
+import NormalComp from './components/NormalComp'
 // import UploadImage from './commonComp/UploadImage'
 import { Provider } from 'react-redux';
 import {
@@ -12,11 +13,12 @@ import {
 import store from '@/store/reducer'
 import { getIP } from '@/store/actions'
 // import cookie from 'react-cookies'
-import Header from '@/commonComp/Header'
 import Background from '@/commonComp/Background'
+import Header from '@/commonComp/Header'
 
-import './App.scss';
+import '@/assets/css/default.scss'
 import 'antd/dist/antd.css';
+import './App.scss';
 
 class App extends React.Component {
 	constructor (props) {
@@ -39,19 +41,37 @@ class App extends React.Component {
 	  	<Provider store={store}>
 		  	{
 		  		this.state.isShow &&
-				  	<Router>
-  						<Background />
-	  					<Header />
-				    	<Switch>
-				        <Route exact path="/system">
-									<SystemComp />
-				        </Route>
-				        <Route path="*">
-				          <ComContent />
-				          {/*<UploadImage />*/}
-				        </Route>
-				      </Switch>
-				    </Router>
+			  	<Router>
+						<Background />
+			    	<Switch>
+			        <Route exact path="/system/:catalog">
+	  						<Header />
+								<SystemComp />
+			        </Route>
+			        <Route exact path="/system">
+	  						<Header />
+								<SystemComp />
+			        </Route>
+			        <Route exact path="/:catalog">
+	  						<Header />
+			          <NormalComp />
+			        </Route>
+			        <Route exact path="/">
+	  						<Header />
+			          <NormalComp />
+			          {/*<UploadImage />*/}
+			        </Route>
+			        <Route exact path="/tag/:tagName">
+	  						<Header />
+			          <NormalComp />
+			        </Route>
+			        <Route path="*">
+	  						<Header />
+			          404
+			          {/*<UploadImage />*/}
+			        </Route>
+			      </Switch>
+			    </Router>
 		    }
 	  	</Provider>
 	  );

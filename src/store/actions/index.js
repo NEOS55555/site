@@ -20,6 +20,12 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
+function getAuthorization () {
+  return {
+    Authorization: cookie.load('user_token')
+  }
+}
+
 function updateSiteList (data) {
   return {
     type: UPDATE_LIST, 
@@ -53,7 +59,7 @@ export const addView = params => axios.post(url + '/addView', params).then(res =
 
 // 得到网页列表
 // catalog, status, pageIndex, pageSize, isTotal
-export const getSiteList = params => dispatch => axios.post(url + '/getSiteList', {...params, user_id: cookie.load('user_id')}).then(res => {
+export const getSiteList = params => dispatch => axios.post(url + '/getSiteList', params).then(res => {
   dispatch(updateSiteList(res.data.result))
 })
 // 得到网页列表
@@ -64,7 +70,7 @@ export const getCatalogList = params => dispatch => axios.post(url + '/getCatalo
 
 // 删除网页
 // _id, status
-export const delSite = params => axios.post(url + '/delSite', {...params, user_id: cookie.load('user_id')}, {headers: {Authorization: cookie.load('user_token')}}).then(res => res.data)
+export const delSite = params => axios.post(url + '/delSite', params, {headers: getAuthorization()}).then(res => res.data)
 // 新增分类
 // _id, status
 export const addCatalog = params => axios.post(url + '/addCatalog', params).then(res => res.data)
@@ -76,7 +82,7 @@ export const addSite = (params) => {
     url: url + '/addSite', 
     method: 'post',
     data: params,
-    headers: {'Content-Type':'multipart/form-data', Authorization: cookie.load('user_token')}
+    headers: {'Content-Type':'multipart/form-data', ...getAuthorization()}
   }).then(res => res.data)
 }
 // 编辑网页
@@ -85,6 +91,6 @@ export const editSite = (params) => {
     url: url + '/editSite', 
     method: 'post',
     data: params,
-    headers: {'Content-Type':'multipart/form-data', Authorization: cookie.load('user_token')}
+    headers: {'Content-Type':'multipart/form-data', ...getAuthorization()}
   }).then(res => res.data)
 }

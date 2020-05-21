@@ -1,23 +1,29 @@
-import React, {Component} from 'react';
+import React, { Component, Fragment} from 'react';
 import './SiteItem.scss'
-import { SettingFilled, HeartFilled } from '@ant-design/icons'
+import { EditOutlined, HeartFilled } from '@ant-design/icons'
 import { getStatus, getCeil5 } from '@/common/common'
 // import Dialog from '@/commonComp/Dialog'
 import url from '@/common/api'
 import cookie from 'react-cookies'
 import { setRate, addView } from '@/store/actions'
-import { Rate, Spin, Tooltip, Badge } from 'antd';
+import { Rate, Spin, Tooltip } from 'antd';
 import {editWebSite} from '@/components/AddWebSite/AddWebSite'
-import CurContext from '@/components/SystemComp/cur-context'
+import CurContext from '@/components/ComContent/cur-context'
+import { connect } from 'react-redux'
 
 import DelIcon from './Icons/DelIcon'
-
+import {
+  Link
+} from "react-router-dom";
 
 
 class SiteItem extends Component {
 	static contextType = CurContext;
 	constructor (props) {
 		super(props);
+
+		
+
 		this.state = {
 			rate: props.data.rate,
 			viewsCount: props.data.views,
@@ -26,11 +32,7 @@ class SiteItem extends Component {
 		}
 	}
 	componentDidMount () {
-		// const {data} = this.props;
-		/*this.setState({
-			hasRated: !!data.rate.find(it => ((it.user_id !== undefined && it.user_id === cookie.load('user_id')) || it.user_ip === cookie.load('user_ip')))
-		})*/
-		// console.log(cookie.load('userIp'))
+
 	}
 	// 评价
 	rateChange = value => {
@@ -38,6 +40,12 @@ class SiteItem extends Component {
 		this.setState({
 			isRating: true,
 		})
+		/*setTimeout(() => {
+			this.setState({
+				isRating: false,
+			})
+		}, 3000)
+		return;*/
 		setRate({
 			site_id,
 			// user_ip: cookie.load('userIp'),
@@ -71,9 +79,9 @@ class SiteItem extends Component {
 	// 编辑弹窗
 	editClick = () => {
 		const ctx = this.context;
-		const {data} = this.props;
+		const { data, catalogList } = this.props;
 		editWebSite.open({
-	    catalogList: ctx.catalogList,
+	    catalogList,
 			...data,
 			handleOk: ctx.handleOk
 		})
@@ -81,9 +89,13 @@ class SiteItem extends Component {
 	render () {
 		const ctx = this.context;
 		// console.log(ctx);
-		const {data, isSystem} = this.props;
+		const { data, isSystem, catalogList} = this.props;
 		const { isRating, rateList, viewsCount, rate } = this.state;
-
+		const catalogMap = {};
+		catalogList.forEach(it => {
+			catalogMap[it._id] = it.name;
+		})
+		// console.log(catalogMap)
 		// const rateval = rateList.reduce((a, p) => a + p.value, 0) / rateList.length || 0;
 		const rateval = rate.value / rate.length || 0;
 		return (
@@ -92,17 +104,15 @@ class SiteItem extends Component {
 					
 					<h2 className="site-title">
 						<Tooltip placement="right" title={`点击跳转`}>
-							<span onClick={this.linkTo}>{data.name} {getStatus(data.status)} <Badge count={viewsCount} overflowCount={999} /></span>
+							<span onClick={this.linkTo}>{data.name} {getStatus(data.status)}</span>
 						</Tooltip>
 						
-						{isSystem ? <span><SettingFilled onClick={this.editClick} /><DelIcon data={data} /></span> : <HeartFilled />}
+						{isSystem ? <span><EditOutlined onClick={this.editClick} /><DelIcon data={data} /></span> : <HeartFilled />}
 					</h2>
 					<div className="rich-head">
-						<Tooltip placement="right" title={`当前评分:${rateval}`}>
-							<Spin spinning={isRating} size="small" >
-								<span>评分: </span><Rate disabled={rate.isRated} value={getCeil5(rateval)} allowHalf onChange={this.rateChange} />
-			        </Spin>
-		        </Tooltip>
+						<Spin spinning={isRating} size="small" >
+							<span>评分: </span><Rate disabled={rate.isRated} value={getCeil5(rateval)} allowHalf onChange={this.rateChange} />
+		        </Spin>
 					</div>
 					<div className="rich-content">
 						<div className="rich-content-text">{data.desc}</div>
@@ -111,11 +121,47 @@ class SiteItem extends Component {
 								<img src={url + data.img} alt=""/>
 							</div>
 						</div>
+						<div className="rich-footer">
+							<ul>
+								<li>发布时间：{data.create_time}</li>
+								<li>
+									分类： 
+									{
+										(data.catalog || []).map((id, index) => 
+											<Fragment key={id}>
+												<Link to={(isSystem ? '/system/' : '/') + id}>{catalogMap[id]}</Link> 
+												{index !== data.catalog.length - 1 && '、'}
+											</Fragment>) 
+									}
+								</li>
+								<li>
+									标签： 
+									{
+										(data.tags || []).map((name, index) => 
+											<Fragment key={index}>
+												<Link to={'/tag/' + name}>{name}</Link>
+												{index !== data.tags.length - 1 && '、'}
+											</Fragment>) 
+									}
+								</li>
+								<li>作者：{data.create_user_name}</li>
+							</ul>
+							
+							
+						</div>
 					</div>
 				{/*</Skeleton>*/}
 			</div>
 		)
 	}
 }
+const mapStateToProps = state => {
+	const { catalogList } = state.siteMng
+  return {
+  	catalogList: catalogList.slice(1),
+  };
+};
 
-export default SiteItem;
+
+
+export default connect(mapStateToProps, null)(SiteItem);

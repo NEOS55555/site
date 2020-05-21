@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {message, Modal, Button, Input } from 'antd';
 // import './AddWebSite.scss';
-import { addCatalog } from '@/store/actions'
+import { addCatalog, getCatalogList } from '@/store/actions'
+import { connect } from 'react-redux'
 
 
 class AddCatalog extends Component {
@@ -30,12 +31,13 @@ class AddCatalog extends Component {
 	handleOk = () => {
 		// const that = this;
 		const {name} = this.state;
-		const {handleOk} = this.props;
+		// const {handleOk} = this.props;
 
 		addCatalog({name}).then(res => {
 			if (res.resultCode === 200) {
 				message.success('新增成功!')
-				handleOk && handleOk()
+				this.props.getCatalogList()
+				// handleOk && handleOk()
 			}
 			this.setState({
 			  visible: false,
@@ -59,36 +61,51 @@ class AddCatalog extends Component {
 	
 	
 	render() {
-	    const { visible, confirmLoading, name} = this.state;
+	   const { visible, confirmLoading, name} = this.state;
 	    // console.log(selectOptions)
-	    return (
-				<div>
-		    	<Button type="primary" onClick={() => {
-		        this.showModal()
-		      }}>新增分类</Button>
-		       
-	        <Modal
-	        	width={700}
-						title="新增分类"
-						visible={visible}
-						maskClosable={false}
-						onOk={this.handleOk}
-						confirmLoading={confirmLoading}
-						onCancel={this.handleCancel}
-						okText="提交"
-						cancelText="取消"
-	        >
-		        <div className="self-wrapper">
-							<div className="self-line must">
-								<label>分类名称</label><Input onChange={this.nameChange} value={name} />
-							</div>
-		        </div>
-	        	
-	        </Modal>
-			</div>
+	   return (
+			<Fragment>
+	    	<Button type="primary" onClick={() => {
+	        this.showModal()
+	      }}>新增分类</Button>
+	       
+        <Modal
+        	width={700}
+					title="新增分类"
+					visible={visible}
+					maskClosable={false}
+					onOk={this.handleOk}
+					confirmLoading={confirmLoading}
+					onCancel={this.handleCancel}
+					okText="提交"
+					cancelText="取消"
+        >
+	        <div className="self-wrapper">
+						<div className="self-line must">
+							<label>分类名称</label><Input onChange={this.nameChange} value={name} />
+						</div>
+	        </div>
+        	
+        </Modal>
+			</Fragment>
 	  );
 	}
 }
 
+/*const mapStateToProps = state => {
+	const { catalogList } = state.siteMng
+  return {
+  	catalogList: catalogList.slice(1),
+  };
+};*/
 
-export default AddCatalog;
+
+const mapDispatchToProps = dispatch => {
+  return {
+  	
+  	getCatalogList (params) {
+			return dispatch(getCatalogList(params))
+  	},
+  };
+};
+export default connect(null, mapDispatchToProps)(AddCatalog);;

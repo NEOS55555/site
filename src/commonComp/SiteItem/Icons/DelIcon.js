@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { CloseOutlined, DeleteFilled } from '@ant-design/icons'
+import { CloseOutlined, VerticalAlignBottomOutlined } from '@ant-design/icons'
 import Dialog from '@/commonComp/Dialog'
 import {connect} from 'react-redux'
 // import cookie from 'react-cookies';
@@ -19,12 +19,18 @@ class CloseIcon extends Component {
 	}
 
 	showModel = () => {
-		const { data, handleOk, updateDate, pageIndex: tPageindex, siteTotal, pageSize, catalog, getSiteList } = this.props;
-		const maxPages = Math.ceil((siteTotal-1) / pageSize)
-		const pageIndex = tPageindex > maxPages ? maxPages : tPageindex;
 
+		const { data, handleOk, updateDate, pageIndex: tPageindex, siteTotal, pageSize, catalog, getSiteList, status: listStatus } = this.props;
 		const {_id, status} = data;
-		const txt = status === NORMAL_CODE ? '下架' : '删除'
+		const isdown = status === NORMAL_CODE;
+		const txt = isdown ? '下架' : '删除'
+		let pageIndex = tPageindex
+		if (!isdown) {
+			const maxPages = Math.ceil((siteTotal-1) / pageSize)
+			pageIndex = isdown ? tPageindex > maxPages ? maxPages : tPageindex : tPageindex;
+		}
+
+		
 
 		Dialog.open({
 			title: txt,
@@ -34,9 +40,13 @@ class CloseIcon extends Component {
 				Dialog.showLoading();
 				delSite({_id, status }).then(res => {
 		    	// handleOk && handleOk(1)
-		    	updateDate({ pageIndex })
-					getSiteList({catalog, status, pageIndex, pageSize, isTotal: true});
-		      Dialog.close();
+		    	if (res.resultCode === 200) {
+			    	updateDate({ pageIndex })
+						getSiteList({catalog, status: listStatus , pageIndex, pageSize, isTotal: true, is_edit: true});
+		      	Dialog.close();
+		    	} else {
+						Dialog.hideLoading();
+		    	}
 		    })
 			}
 		});
@@ -50,17 +60,18 @@ class CloseIcon extends Component {
 
 		return (
 				status === NORMAL_CODE
-				? <DeleteFilled onClick={this.showModel} />
-				: <CloseOutlined style={{color: 'red'}} onClick={this.showModel} />
+				? <VerticalAlignBottomOutlined onClick={this.showModel} />
+				: <CloseOutlined style={{color: '#fff'}} onClick={this.showModel} />
 		)
 	}
 }
 const mapStateToProps = state => {
-	const { siteList, siteTotal, pageIndex, pageSize, catalog } = state.siteMng
+	const { siteList, siteTotal, pageIndex, pageSize, catalog, status } = state.siteMng
   return {
   	siteList,
   	siteTotal,
   	pageIndex, pageSize, catalog,
+  	status,
   };
 };
 

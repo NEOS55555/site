@@ -29,6 +29,7 @@ class AddWebSite extends Component {
 			catalog: [],
 			img: '',	// 图片地址
 			previewImage: null,	// 图片地址
+			tags: [],
 		}
 		this.state = {
 			visible: false,
@@ -65,31 +66,35 @@ class AddWebSite extends Component {
 	
 	handleSite = (status) => {
 		const { isEdit } = this.props
-		const {name, url, desc, imgfiles, catalog, handleOk, _id, img} = this.state;
-		const user_id = cookie.load('user_id');
+		const { name, url, desc, imgfiles, catalog, handleOk, _id, img, tags } = this.state;
+		// const user_id = cookie.load('user_id');
 		// console.log(catalog)
 		
 		let formData = new FormData();
-		user_id && formData.append('user_id', user_id);
+		// user_id && formData.append('user_id', user_id);
 		formData.append('name', name);
 		formData.append('url', url);
 		formData.append('desc', desc);
 		formData.append('status', status);
-		/*catalog.forEach(it => {
-			formData.append('catalog', parseInt(it));
-		})*/
+		catalog.forEach((it, index) => {
+			formData.append(`catalog`, parseInt(it));
+		})
+		tags.forEach((it, index) => {
+			formData.append(`tags`, it);
+		})
+
 		if (isEdit) {
 			formData.append('_id', _id);
 			if (imgfiles) {
 				formData.append('img', imgfiles[0])
-			} else if (img) {
+			} else {
 				formData.append('img', img)
 			}
 		} else {
 			imgfiles && formData.append('img', imgfiles[0]);
 		}
-		catalog.length > 0 && formData.append('catalog', catalog.join(','));
- 
+		// catalog.length > 0 && formData.append('catalog', catalog.join(','));
+		// tags.length > 0 && formData.append('tags', tags.join(','));
 		// window.abc = formData;
 		(isEdit ? editSite : addSite)(formData).then(data => {
 			// return;
@@ -177,14 +182,23 @@ class AddWebSite extends Component {
 	}
 	catalogChange = catalog => {
 		// console.log(catalog)
+		if (catalog.length > 3) {
+			return;
+		}
 		this.setState({
 			catalog
 		})
 	}
+	tagChange = tags => {
+		if (tags.length > 5) {
+			return;
+		}
+		this.setState({tags})
+	}
 
 	
 	render() {
-    const { visible, confirmLoading, name, url, desc, catalog, catalogList, img, previewImage } = this.state;
+    const { visible, confirmLoading, name, url, desc, catalog, catalogList, img, previewImage, tags } = this.state;
 		const { isEdit } = this.props;
 		// console.log(`previewImage: ${!!previewImage}, img ${img}`)
 		// console.log(previewImage)
@@ -214,7 +228,6 @@ class AddWebSite extends Component {
 				// cancelText="取消"
       >
         <div className="self-wrapper">
-        
 					<div className="self-line must">
 						<label>名称</label><Input className="error" onChange={this.nameChange} value={name} />
 					</div>
@@ -232,32 +245,32 @@ class AddWebSite extends Component {
 						<label>描述</label><TextArea onChange={this.descChange} value={desc} />
 					</div>
 					<div className="self-line must">
-						<label>标签</label>
-						<Select
-			  			mode="tags"
-		        	placeholder="Please select"
-		        	defaultActiveFirstOption={false}
-		        	// filterOption={(val, opt) => !!opt}
-		        	// value={catalog.map(n => n+'')}
-		        	// onChange={this.catalogChange}
-		        	style={{ width: '100%' }}
-			      >
-		        </Select>
-					</div>
-					<div className="self-line must">
 						<label>分类</label>
 						<Select
 			  			mode="multiple"
-		        	placeholder="Please select"
+		        	placeholder="请选择网站分类, 最多3个"
 		        	defaultActiveFirstOption={false}
 		        	// filterOption={(val, opt) => !!opt}
-		        	// value={catalog.map(n => n+'')}
+		        	value={catalog.map(n => n+'')}
 		        	onChange={this.catalogChange}
 		        	style={{ width: '100%' }}
 			      >
 			        {
 			        	catalogList.map(it => <Option key={it._id}>{it.name}</Option>)
 			        }
+		        </Select>
+					</div>
+					<div className="self-line must">
+						<label>标签</label>
+						<Select
+			  			mode="tags"
+		        	placeholder="请输入网站标签, 最多5个"
+		        	// defaultActiveFirstOption={false}
+		        	// filterOption={(val, opt) => !!opt}
+		        	value={tags}
+		        	onChange={this.tagChange}
+		        	style={{ width: '100%' }}
+			      >
 		        </Select>
 					</div>
         </div>

@@ -3,6 +3,7 @@
 		/* display: flex;
 		flex-direction: column; */
 		label {
+			color: #fff;
 			display: block;
 		}
 		.img-ctn {
@@ -17,6 +18,9 @@
 	.self-line {
 		.inline {
 			display: flex;
+			.code {
+				background: #fff;
+			}
 		}
 	}
 	.self-line:not(:last-child) {
@@ -51,8 +55,96 @@
 	border-color: red;
 
 }
-body {
-	.ant-menu.ant-menu-dark {
-		background: transparent;
-	}
+.ant-btn:hover, 
+.ant-btn:focus, 
+.ant-btn:active, 
+.ant-btn.active,
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+.ant-menu.ant-menu-dark,
+.ant-modal-content,
+.ant-modal-header {
+	background: transparent;
+}
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled),
+.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+	background: rgba(64, 169, 255, 0.28);
+	color: $fontColor;
+}
+.ant-select-selection-placeholder {
+	opacity: .7;
+}
+.ant-modal-header {
+	border-bottom-color: $borderColor;
+}
+.ant-modal-footer {
+	border-top-color: $borderColor;
+}
+.ant-input-password-icon,
+.ant-empty-description,
+.ant-modal-title,
+.ant-modal-close-x,
+.ant-select-item,
+.ant-select-multiple .ant-select-selector,
+.ant-select-multiple .ant-select-selection-item-remove,
+.ant-message-notice-content,
+.ant-btn,
+.ant-input {
+	color: $fontColor;
+}
+.ant-btn-primary {
+	color: #1890ff;
+}
+.ant-input-password-icon:hover,
+.ant-select-multiple .ant-select-selection-item-remove:hover {
+	color: rgba(255, 255, 255, .7);
+}
+.ant-message-notice-content,
+.ant-select-dropdown {
+	background: rgba(5, 6, 8, .5);
+	border-color: $borderColor;
+}
+.ant-btn,
+.ant-select-multiple .ant-select-selector,
+.ant-select-multiple .ant-select-selection-item,
+.ant-input {
+	background: transparent;
+	border-color: $borderColor;
+}
+.ant-message-notice-content,
+.ant-select-dropdown {
+	box-shadow: 0 0 11px 0 $shadowColor;
+}
+.ant-modal-content {
+	background: rgba(5, 6, 8, .5);
+	color: $fontColor;
+	box-shadow: 0 0 94px 0 $shadowColor;
+	animation: box 3s linear infinite;
+}
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+	color: $fontColor;
+	border-color: $borderColor;
+}
+.ant-input-affix-wrapper {
+	background: transparent;
+	border-color: $borderColor;
+}
+.ant-btn-link {
+  color: #1890ff;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.ant-spin-container::after {
+	background: transparent;
+}
+@keyframes box {
+  from {
+    box-shadow: 0 0 94px 0 $shadowColor;
+  }
+  50% {
+    box-shadow: 0 0 104px 10px $shadowColor;
+  }
+  to{
+    box-shadow: 0 0 94px 0 $shadowColor;
+  }
 }

@@ -49,29 +49,30 @@ class Login extends Component {
 	}
 	// 登陆
 	handleOk = () => {
-		const { name, password, email, code } = this.state;
+		const { name, password, code } = this.state;
 	
-		login({name, password, email, code: code.toString().toLowerCase()}).then(data => {
+		login({name, password, email: name, code: code.toString().toLowerCase()}).then(data => {
 			// console.log(res)
 			const { result, resultCode, resultMessage } = data;
-			const { _id, token } = result;
+			const { _id, token, name: user_name } = result;
 			
 			if (resultCode !== 200) {
-				if (resultCode === 133) {
+				this.refreshCode()
+				/*if (resultCode === 133) {
 					this.refreshCode()
 					return;
-				}
+				}*/
 				return
 			}
 			cookie.save('user_id', _id)
 			cookie.save('user_token', token)
-			cookie.save('user_name', name)
+			cookie.save('user_name', user_name)
 			message.success(resultMessage)
 			this.setState({
 				visible: false,
 			})
 
-			this.props.setUsername(name)
+			this.props.setUsername(user_name)
 		})
 	};
 	
@@ -143,7 +144,7 @@ class Login extends Component {
 							<label>验证码</label>
 							<div className="inline">
 								<Input onChange={this.codeChange} value={code} style={{width: 150}} />
-    						<a onClick={this.refreshCode}><img src={codeurl} /></a>
+    						<a onClick={this.refreshCode}><img className="code" src={codeurl} alt="验证码" /></a>
 
 							</div>
 						</div>

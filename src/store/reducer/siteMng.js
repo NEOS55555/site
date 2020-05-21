@@ -5,7 +5,8 @@ const initState = {
   catalogList: [],
   pageIndex: 1,
   pageSize: 5,
-  catalog: -1,
+  // catalog: -1,
+  // status: 1,  // 系统管理-如果后面有状态切换的话， 就会需要到
 };
 
 export default (state = initState, {type, data}) => {
