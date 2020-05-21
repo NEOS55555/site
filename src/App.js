@@ -13,7 +13,7 @@ import {
 import store from '@/store/reducer'
 import { getIP } from '@/store/actions'
 // import cookie from 'react-cookies'
-import Background from '@/commonComp/Background'
+import backgrond from '@/commonComp/Background'
 import Header from '@/commonComp/Header'
 
 import '@/assets/css/default.scss'
@@ -42,7 +42,6 @@ class App extends React.Component {
 		  	{
 		  		this.state.isShow &&
 			  	<Router>
-						<Background />
 			    	<Switch>
 			        <Route exact path="/system/:catalog">
 	  						<Header />

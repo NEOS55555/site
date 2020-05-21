@@ -2,6 +2,7 @@ import axios from 'axios';
 import url from '@/common/api'
 import cookie from 'react-cookies';
 import { message } from 'antd';
+import loading from '@/commonComp/Loading'
 
 export const UPDATE_DATA = 'UPDATE_DATA';
 export const UPDATE_LIST = 'UPDATE_LIST';
@@ -59,9 +60,13 @@ export const addView = params => axios.post(url + '/addView', params).then(res =
 
 // 得到网页列表
 // catalog, status, pageIndex, pageSize, isTotal
-export const getSiteList = params => dispatch => axios.post(url + '/getSiteList', params).then(res => {
-  dispatch(updateSiteList(res.data.result))
-})
+export const getSiteList = params => dispatch => {
+  loading.open();
+  axios.post(url + '/getSiteList', params).then(res => {
+    dispatch(updateSiteList(res.data.result))
+    loading.close()
+  })
+}
 // 得到网页列表
 // catalog, status, pageIndex, pageSize, isTotal
 export const getCatalogList = params => dispatch => axios.post(url + '/getCatalogList', params).then(res => {
