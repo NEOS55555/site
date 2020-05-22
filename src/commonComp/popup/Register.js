@@ -1,12 +1,13 @@
 import React, { Component, Fragment, createRef } from 'react';
-import { message, Modal, Button, Input, Select } from 'antd';
+import { message, Modal, Button, Input } from 'antd';
 import { checkMail } from '@/common/common'
 import { register, setUsername, getRegCode } from '@/store/actions'
 import { connect } from 'react-redux'
 // import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons'
 import Email from '@/commonComp/input/Email'
 // import imgUrl from '@/common/api'
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
+import { saveLoginCookie } from './loginCookie'
 
 const COUNT_DOWN = 60;
 
@@ -48,7 +49,7 @@ class Register extends Component {
 		clearInterval(this.mailCountInterval)
 		this.mailCountInterval = setInterval(() => {
 			const { mailCount } = this.state;
-			if (mailCount == 1) {
+			if (mailCount === 1) {
 				this.setState({
 					mailClick: false,
 					mailCount: COUNT_DOWN
@@ -67,7 +68,7 @@ class Register extends Component {
 		// return;
 		getRegCode({email}).then(res => {
 			console.log(res)
-			if (res.resultCode == 200) {
+			if (res.resultCode === 200) {
 				this.startCountDown();
 				return message.success(res.resultMessage)
 			}
@@ -88,8 +89,9 @@ class Register extends Component {
 	// 上架
 	handleOk = () => {
 		const { name, password, email, code } = this.state;
-	
+		this.setState({confirmLoading: true})
 		register({name, password, email, code}).then(data => {
+			this.setState({confirmLoading: false})
 			// console.log(res)
 			const { result, resultCode, resultMessage } = data;
 			const { _id, token } = result;
@@ -97,9 +99,8 @@ class Register extends Component {
 			if (resultCode !== 200) {
 				return ;
 			}
-			cookie.save('user_id', _id)
-			cookie.save('user_token', token)
-			cookie.save('user_name', name)
+			saveLoginCookie(_id, token, name)
+			
 			message.success(resultMessage)
 			this.setState({
 				visible: false,
@@ -163,7 +164,7 @@ class Register extends Component {
 
 	
 	render() {
-    const { visible, confirmLoading, mailClick, mailCount, name, password, email, code } = this.state;
+    const { visible, confirmLoading, mailClick, mailCount, name, password, code } = this.state;
 
     return (
     	<Fragment>

@@ -1,4 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import '@/assets/css/default.scss'
+import 'antd/dist/antd.css';
+import './App.scss';
 // import ComContent from './components/SystemComp/ComContent'
 import SystemComp from './components/SystemComp'
 import NormalComp from './components/NormalComp'
@@ -16,9 +19,7 @@ import { getIP } from '@/store/actions'
 import backgrond from '@/commonComp/Background'
 import Header from '@/commonComp/Header'
 
-import '@/assets/css/default.scss'
-import 'antd/dist/antd.css';
-import './App.scss';
+
 
 class App extends React.Component {
 	constructor (props) {

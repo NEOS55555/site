@@ -60,7 +60,7 @@ var RENDERER = {
         for (var i = 0, length = this.particles.length; i < length; i++) {
             this.particles[i].setAxis(this.strategies[this.strategyIndex]());
         }
-        if (++this.strategyIndex == this.strategies.length) {
+        if (++this.strategyIndex === this.strategies.length) {
             this.strategyIndex = 0;
         }
         this.translationCount = 0;
@@ -72,8 +72,8 @@ var RENDERER = {
         this.context.fillStyle = 'rgba(0, 0, 0, 0.2)';
         this.context.fillRect(0, 0, this.width, this.height);
 
-        for (var i = 0, length = this.particles.length; i < length; i++) {
-            var axis = this.particles[i].getAxis2D(this.theta);
+        for (let i = 0, length = this.particles.length; i < length; i++) {
+            let axis = this.particles[i].getAxis2D(this.theta);
 
             this.context.beginPath();
             this.context.fillStyle = axis.color;
@@ -83,7 +83,7 @@ var RENDERER = {
         this.theta++;
         this.theta %= 360;
 
-        for (var i = 0, length = this.particles.length; i < length; i++) {
+        for (let i = 0, length = this.particles.length; i < length; i++) {
             this.particles[i].rotateX(this.rotationX);
             this.particles[i].rotateY(this.rotationY);
         }

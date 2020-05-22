@@ -1,22 +1,20 @@
 import React, {Component} from 'react';
-import './RightNav.scss'
 import {connect} from 'react-redux'
-import { Menu } from 'antd';
+// import { Menu } from 'antd';
 import { Link } from "react-router-dom";
-// import { getCatalogList } from '@/store/actions'
+// import { getTop10SiteList } from '@/store/actions'
+import { addView } from '@/store/actions'
 
 // const { SubMenu } = Menu;
 
-class RightNav extends Component {
+class Top10Site extends Component {
 	/*constructor (props) {
 		super(props);
 		this.state = {
 			keys: props.defaultSelectedKeys
 		}
 	}
-	componentDidMount () {
-		this.props.getCatalogList();
-	}*/
+	*/
 	/*rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
   state = {
     openKeys: ['sub1'],
@@ -32,12 +30,15 @@ class RightNav extends Component {
       });
     }
   };*/
+  componentDidMount () {
+    console.log('Top10Site mounted')
+  }
 	render () {
-		const { catalogList, isSystem } = this.props;
-		// console.log(this.props.catalogList)
+		const { top10List, isSystem } = this.props;
 		return (
-      <div className="nav-list">
-  			<Menu
+      <div className="top10-list">
+        <h3>本月最热</h3>
+  			<ul
           // mode="inline"
           // theme="dark"
           // defaultSelectedKeys={this.props.defaultSelectedKeys}
@@ -46,27 +47,27 @@ class RightNav extends Component {
           style={{ width: 256 }}
         >
         	{
-        		catalogList.map(({_id, name}) => <Menu.Item key={_id}><Link to={(isSystem ? '/system' : '') + '/' + _id} >{name}</Link></Menu.Item>)
+        		top10List.map(({_id, name, url}) => <li key={_id}><a href={url} target="_blank" onClick={() => addView({_id})} >{name}</a></li>)
         	}
           
-        </Menu>
+        </ul>
       </div>
 		)
 	}
 }
 const mapStateToProps = state => {
-	const {catalogList} = state.siteMng
+	const { top10List } = state.siteMng
   return {
-  	catalogList,
+  	top10List,
   };
 };
 
 
 /*const mapDispatchToProps = dispatch => {
   return {
-  	getCatalogList (params) {
-			return dispatch(getCatalogList(params))
+  	getTop10SiteList (params) {
+			return dispatch(getTop10SiteList(params))
   	},
   };
 };*/
-export default connect(mapStateToProps, null)(RightNav);
+export default connect(mapStateToProps, null)(Top10Site);

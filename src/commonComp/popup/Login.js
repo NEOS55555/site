@@ -1,11 +1,12 @@
 import React, {Component, Fragment, createRef} from 'react';
-import {message, Modal, Button, Input, Select  } from 'antd';
-import { checkMail } from '@/common/common'
+import {message, Modal, Button, Input } from 'antd';
+// import { checkMail } from '@/common/common'
 import { login, setUsername } from '@/store/actions'
 import {connect} from 'react-redux'
 
 import imgUrl from '@/common/api'
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
+import { saveLoginCookie } from './loginCookie'
 
 
 class Login extends Component {
@@ -50,8 +51,9 @@ class Login extends Component {
 	// 登陆
 	handleOk = () => {
 		const { name, password, code } = this.state;
-	
+		this.setState({confirmLoading: true})
 		login({name, password, email: name, code: code.toString().toLowerCase()}).then(data => {
+			this.setState({confirmLoading: false})
 			// console.log(res)
 			const { result, resultCode, resultMessage } = data;
 			const { _id, token, name: user_name } = result;
@@ -64,9 +66,9 @@ class Login extends Component {
 				}*/
 				return
 			}
-			cookie.save('user_id', _id)
-			cookie.save('user_token', token)
-			cookie.save('user_name', user_name)
+
+			saveLoginCookie(_id, token, user_name)
+			
 			message.success(resultMessage)
 			this.setState({
 				visible: false,

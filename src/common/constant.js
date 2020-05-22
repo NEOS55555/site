@@ -10,3 +10,5 @@ export const statusMap = {
 	2: '草稿',
 	3: '待审核'
 }
+
+export const EXPIRES_TIME = 30 * 60 * 1000

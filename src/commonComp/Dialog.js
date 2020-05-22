@@ -43,6 +43,8 @@ class Dialog extends Component {
 			  // visible={visible}
 			  // onOk={onOk}
 			  // confirmLoading={confirmLoading}
+			  okText="确定"
+				cancelText="取消"
 			  onCancel={this.close}
 			>
 			  <p>{content}</p>

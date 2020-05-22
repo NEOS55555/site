@@ -1,7 +1,12 @@
 import React from 'react';
 import {statusMap} from './constant';
 
-
+/*export const replaceStrTob = (str='', key='') => {
+	if (!str || !key) {
+		return str;
+	}
+	return str.replace(new RegExp(key, 'igm'), `<b>${key}</b>`)
+}*/
 
 export const getStatus = statusCode => {
 	return statusCode !== 1 && <b style={{color: statusCode === 0 ? 'red' : 'orange'}}>({statusMap[statusCode]})</b>
@@ -41,3 +46,5 @@ export const getBase64 = (file) => {
     reader.onerror = error => reject(error);
   });
 }
+
+export const isSystemPage = ({path=''}) => path.slice(0, 7) === '/system'

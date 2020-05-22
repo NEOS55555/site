@@ -1,4 +1,4 @@
-import React, {Component, Fragment, createRef} from 'react';
+import React, { Component, createRef } from 'react';
 // import {connect} from 'react-redux'
 import {message, Modal, Button, Input, Select  } from 'antd';
 // import './AddWebSite.scss';
@@ -10,7 +10,7 @@ import {
 import ReactDOM from 'react-dom';
 import imgUrl from '@/common/api'
 import defaultImg from './default-cover.jpg';
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -65,6 +65,7 @@ class AddWebSite extends Component {
 	};
 	
 	handleSite = (status) => {
+		this.setState({confirmLoading: true})
 		const { isEdit } = this.props
 		const { name, url, desc, imgfiles, catalog, handleOk, _id, img, tags } = this.state;
 		// const user_id = cookie.load('user_id');
@@ -96,7 +97,8 @@ class AddWebSite extends Component {
 		// catalog.length > 0 && formData.append('catalog', catalog.join(','));
 		// tags.length > 0 && formData.append('tags', tags.join(','));
 		// window.abc = formData;
-		(isEdit ? editSite : addSite)(formData).then(data => {
+		;(isEdit ? editSite : addSite)(formData).then(data => {
+			this.setState({confirmLoading: false})
 			// return;
 			if (data.resultCode === 200) {
 				handleOk && handleOk();
@@ -211,8 +213,8 @@ class AddWebSite extends Component {
       		<div className="self-footer">
         		<div>
         			<Button onClick={this.handleCancel}>取消</Button>
-	        		<Button onClick={this.handleDraft} type="primary">保存为草稿</Button>
-	        		<Button onClick={this.handleOk} type="primary">上架</Button>
+	        		<Button loading={confirmLoading} onClick={this.handleDraft} type="primary">保存为草稿</Button>
+	        		<Button loading={confirmLoading} onClick={this.handleOk} type="primary">上架</Button>
         		</div>
         	</div>
       	)}

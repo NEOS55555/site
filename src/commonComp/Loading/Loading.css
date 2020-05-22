@@ -10,7 +10,7 @@
   animation: op1 .2s;
 }
 .canvas-back.op0 {
-  animation: op0 .2s;
+  animation: op0 .5s;
 }
 @keyframes op1 {
   from {

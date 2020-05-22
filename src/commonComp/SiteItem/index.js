@@ -1,10 +1,10 @@
 import React, { Component, Fragment} from 'react';
 import './SiteItem.scss'
-import { EditOutlined, HeartFilled } from '@ant-design/icons'
-import { getStatus, getCeil5 } from '@/common/common'
+import { EditOutlined/*, HeartFilled*/ } from '@ant-design/icons'
+import { getStatus, getCeil5, replaceStrTob } from '@/common/common'
 // import Dialog from '@/commonComp/Dialog'
 import url from '@/common/api'
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
 import { setRate, addView } from '@/store/actions'
 import { Rate, Spin, Tooltip } from 'antd';
 import {editWebSite} from '@/components/AddWebSite/AddWebSite'
@@ -21,8 +21,6 @@ class SiteItem extends Component {
 	static contextType = CurContext;
 	constructor (props) {
 		super(props);
-
-		
 
 		this.state = {
 			rate: props.data.rate,
@@ -87,16 +85,15 @@ class SiteItem extends Component {
 		})
 	}
 	render () {
-		const ctx = this.context;
+		// const ctx = this.context;
 		// console.log(ctx);
-		const { data, isSystem, catalogList} = this.props;
-		const { isRating, rateList, viewsCount, rate } = this.state;
+		const { data, isSystem, catalogList, search } = this.props;
+		const { isRating, rate } = this.state;
 		const catalogMap = {};
 		catalogList.forEach(it => {
 			catalogMap[it._id] = it.name;
 		})
 		// console.log(catalogMap)
-		// const rateval = rateList.reduce((a, p) => a + p.value, 0) / rateList.length || 0;
 		const rateval = rate.value / rate.length || 0;
 		return (
 			<div className="site-item">
@@ -107,7 +104,10 @@ class SiteItem extends Component {
 							<span onClick={this.linkTo}>{data.name} {getStatus(data.status)}</span>
 						</Tooltip>
 						
-						{isSystem ? <span><EditOutlined onClick={this.editClick} /><DelIcon data={data} /></span> : <HeartFilled />}
+						{
+							//isSystem ? <span><EditOutlined onClick={this.editClick} /><DelIcon data={data} /></span> : <HeartFilled />
+						}
+						{isSystem && <span><EditOutlined onClick={this.editClick} /><DelIcon data={data} /></span> }
 					</h2>
 					<div className="rich-head">
 						<Spin spinning={isRating} size="small" >
@@ -156,9 +156,10 @@ class SiteItem extends Component {
 	}
 }
 const mapStateToProps = state => {
-	const { catalogList } = state.siteMng
+	const { catalogList, search } = state.siteMng
   return {
-  	catalogList: catalogList.slice(1),
+  	search,
+  	catalogList,
   };
 };
 

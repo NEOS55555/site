@@ -1,0 +1,22 @@
+.header {
+	color: $fontColor;
+	height: $headerHeight;
+	position: fixed;
+	background: #000;
+	width: 100%;
+	z-index: 3;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.max-container {
+		display: flex;
+    /*flex-direction: row-reverse;*/
+    justify-content: space-between;
+		.user-ctn {
+			.user-btn {
+				color: $fontColor;
+			}
+		}
+	}
+}

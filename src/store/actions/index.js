@@ -4,10 +4,21 @@ import cookie from 'react-cookies';
 import { message } from 'antd';
 import loading from '@/commonComp/Loading'
 
-export const UPDATE_DATA = 'UPDATE_DATA';
+export const UPDATE_DATA = 'UPDATE_DATA';    // 这个只是修改siteMng里的数据 ，别他妈搞忘了
 export const UPDATE_LIST = 'UPDATE_LIST';
 export const UPDATE_CATALOG_LIST = 'UPDATE_CATALOG_LIST';
 export const SET_USER_NAME = 'SET_USER_NAME';
+export const UPDATE_TOP10_LIST = 'UPDATE_TOP10_LIST';
+
+axios.interceptors.request.use(
+config => {
+  loading.transShow();
+  return config
+},
+err => {
+  return Promise.reject(err)
+})
+
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
@@ -39,6 +50,12 @@ function updateCatalogList (data) {
     data
   }
 }
+function updateTop10SiteList (data) {
+  return {
+    type: UPDATE_TOP10_LIST, 
+    data
+  }
+}
 export function setUsername (data) {
   return {
     type: SET_USER_NAME, 
@@ -58,11 +75,19 @@ export const getIP = () => axios.get(url + '/getIP').then(res => res.data)
 export const setRate = params => axios.post(url + '/setRate', params).then(res => res.data)
 export const addView = params => axios.post(url + '/addView', params).then(res => res.data)
 
+// 获取top10最热网站
+export const getTop10SiteList = () => dispatch => {
+  loading.open();
+  axios.post(url + '/getSiteList', {pageIndex: 1, pageSize: 10, orderBy: 'monthViews', status: 1}).then(res => {
+    dispatch(updateTop10SiteList(res.data.result))
+    loading.close()
+  })
+}
 // 得到网页列表
 // catalog, status, pageIndex, pageSize, isTotal
 export const getSiteList = params => dispatch => {
   loading.open();
-  axios.post(url + '/getSiteList', params).then(res => {
+  axios.post(url + '/getSiteList', params, {headers: getAuthorization()}).then(res => {
     dispatch(updateSiteList(res.data.result))
     loading.close()
   })

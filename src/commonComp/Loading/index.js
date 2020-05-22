@@ -13,6 +13,13 @@ class Loading extends Component {
 	componentDidMount () {
 		RENDERER.init(this.canvas.current, document.body.clientWidth, document.body.clientHeight);
 	}
+	transShow () {
+		clearTimeout(this.timer)
+		this.setState({
+			show: true,
+		})
+		this.timeClose()
+	}
 	open () {
 		clearTimeout(this.timer)
 		this.setState({
@@ -24,6 +31,9 @@ class Loading extends Component {
 		this.setState({
 			open: false,
 		})
+		this.timeClose()
+	}
+	timeClose () {
 		this.timer = setTimeout(() => {
 			this.setState({
 				show: false,
@@ -50,7 +60,7 @@ class Loading extends Component {
 		return (
 			<div className={"canvas-back " + (show ? 'op1' : 'op0')} style={{
 				opacity: (open || show) ? 1 : 0,
-				zIndex: open ? 3 : 1,
+				zIndex: open ? 998 : 1,
 			}} >
     		<canvas ref={this.canvas} ></canvas>
 			</div>

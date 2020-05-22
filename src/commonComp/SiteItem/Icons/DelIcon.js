@@ -20,7 +20,7 @@ class CloseIcon extends Component {
 
 	showModel = () => {
 
-		const { data, handleOk, updateDate, pageIndex: tPageindex, siteTotal, pageSize, catalog, getSiteList, status: listStatus } = this.props;
+		const { data, updateDate, pageIndex: tPageindex, siteTotal, pageSize, catalog, getSiteList, status: listStatus } = this.props;
 		const {_id, status} = data;
 		const isdown = status === NORMAL_CODE;
 		const txt = isdown ? '下架' : '删除'

@@ -1,0 +1,23 @@
+.ant-menu-root.ant-menu-vertical, .ant-menu-root.ant-menu-vertical-left, .ant-menu-root.ant-menu-vertical-right, .ant-menu-root.ant-menu-inline,
+.ant-menu {
+	background: transparent;
+	box-shadow: $smallBoxShadow;
+}
+.ant-menu-item:active, .ant-menu-submenu-title:active {
+	background: $listActiveBgColor;
+}
+.ant-menu-item > a {
+	color: $fontColor;
+}
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+	border: none;
+}
+.ant-menu-item:hover, .ant-menu-submenu-title:hover {
+	background: $listHoverBgColor;
+}
+.nav-list {
+	
+	.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+		background: transparent;
+	}
+}

@@ -71,7 +71,7 @@
 						text-decoration: underline;
 					}
 					a:hover {
-						color: $hoverColor;
+						color: $hoverHighlightColor;
 					}
 				}
 				li:not(:last-child) {

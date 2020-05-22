@@ -1,10 +1,12 @@
-import { UPDATE_LIST, UPDATE_CATALOG_LIST, UPDATE_DATA } from '../actions';
+import { UPDATE_LIST, UPDATE_CATALOG_LIST, UPDATE_DATA, UPDATE_TOP10_LIST } from '../actions';
 const initState = {
+  top10List: [],  // top10网站
   siteList: [],
   siteTotal: 0,
   catalogList: [],
   pageIndex: 1,
   pageSize: 5,
+  search: '',
   // catalog: -1,
   status: -1,  // 系统管理-如果后面有状态切换的话， 就会需要到
 };
@@ -33,6 +35,11 @@ export default (state = initState, {type, data}) => {
       return {
         ...state,
         catalogList: data.list
+      }
+    case UPDATE_TOP10_LIST: 
+      return {
+        ...state,
+        top10List: data.list
       }
     default:
       return state

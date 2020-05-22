@@ -67,7 +67,7 @@
 }
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled),
 .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-	background: rgba(64, 169, 255, 0.28);
+	background: $listHoverBgColor;
 	color: $fontColor;
 }
 .ant-select-selection-placeholder {
@@ -79,6 +79,10 @@
 .ant-modal-footer {
 	border-top-color: $borderColor;
 }
+.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title,
+.ant-dropdown-menu-item > a, .ant-dropdown-menu-submenu-title > a,
+a,
+.ant-pagination-options-quick-jumper input,
 .ant-input-password-icon,
 .ant-empty-description,
 .ant-modal-title,
@@ -94,14 +98,22 @@
 .ant-btn-primary {
 	color: #1890ff;
 }
+.ant-dropdown-menu-item:hover, .ant-dropdown-menu-submenu-title:hover {
+	background: $listHoverBgColor;
+}
+.ant-dropdown-menu-item > a:hover, 
+.ant-dropdown-menu-submenu-title > a:hover {
+	color: $fontColor;
+}
 .ant-input-password-icon:hover,
 .ant-select-multiple .ant-select-selection-item-remove:hover {
-	color: rgba(255, 255, 255, .7);
+	color: $hoverWhiteColor;
 }
 .ant-message-notice-content,
 .ant-select-dropdown {
 	background: rgba(5, 6, 8, .5);
 	border-color: $borderColor;
+	box-shadow: $smallBoxShadow;
 }
 .ant-btn,
 .ant-select-multiple .ant-select-selector,
@@ -110,23 +122,26 @@
 	background: transparent;
 	border-color: $borderColor;
 }
-.ant-message-notice-content,
-.ant-select-dropdown {
-	box-shadow: 0 0 11px 0 $shadowColor;
-}
+
 .ant-modal-content {
 	background: rgba(5, 6, 8, .5);
 	color: $fontColor;
-	box-shadow: 0 0 94px 0 $shadowColor;
+	box-shadow: $bigBoxShadow;
 	animation: box 3s linear infinite;
 }
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
 	color: $fontColor;
 	border-color: $borderColor;
 }
+.ant-dropdown-menu,
+.ant-pagination-options-quick-jumper input,
 .ant-input-affix-wrapper {
 	background: transparent;
 	border-color: $borderColor;
+}
+
+.ant-dropdown-menu {
+  box-shadow: $smallBoxShadow;
 }
 .ant-btn-link {
   color: #1890ff;
@@ -139,12 +154,20 @@
 }
 @keyframes box {
   from {
-    box-shadow: 0 0 94px 0 $shadowColor;
+    box-shadow: $bigBoxShadow;
   }
   50% {
     box-shadow: 0 0 104px 10px $shadowColor;
   }
   to{
-    box-shadow: 0 0 94px 0 $shadowColor;
+    box-shadow: $bigBoxShadow;
   }
+}
+
+/**/
+.container {
+	padding-top: $headerHeight + 10px;
+}
+.max-container {
+	width: 1000px;
 }

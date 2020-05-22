@@ -4,25 +4,24 @@ import SiteItem from '@/commonComp/SiteItem'
 // import { delSite } from '@/store/actions'
 import { Pagination } from 'antd'
 import Empty from '@/commonComp/Empty'
+import RightNav from '@/commonComp/RightNav'
+import Top10Site from '@/components/Top10Site'
 
 
 import './Content.scss';
 
 class Content extends PureComponent {
 
-
-
-
   render () {
   	// const { visible, confirmLoading } = this.state;
   	const {list=[], total, current, pageSize, onChange, onShowSizeChange, isSystem} = this.props;
   	// console.log(current)
   	return (
-  		<Fragment>
+		  <div className="site-wrapper container">
   			{
   				list.length > 0 
   				?	(
-	  				<div>
+  					<div>
 	  					<div className="site-container">
 					  		{
 					  			list.map(it => 
@@ -38,7 +37,7 @@ class Content extends PureComponent {
 					  	</div>
 					  	<Pagination 
 					  		total={total} current={current} pageSize={pageSize}
-						  	// showQuickJumper 
+						  	showQuickJumper 
                 size="small" 
                 // showSizeChanger  
 						  	onChange={onChange} 
@@ -46,13 +45,17 @@ class Content extends PureComponent {
 						  	onShowSizeChange={onShowSizeChange} 
 						  	// showTotal={total => `共 ${total} 条数据`} 
 					  	/>
-	  				</div>
+  					</div>
   				)
 					: <Empty />
 		  	
   			}
+  			<div className="right-content">
+  				<Top10Site />
+  				<RightNav isSystem={isSystem} />
+  			</div>
 		
-  		</Fragment>
+	  	</div>
 	  )
   }
 }

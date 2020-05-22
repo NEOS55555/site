@@ -3,7 +3,16 @@ $orb: orb;
 $borderColor: rgb(96, 100, 109);
 $shadowColor: #95c3e8;
 $fontColor: #fff;
-$hoverColor: #40a9ff;
+$hoverHighlightColor: #40a9ff;
+$headerHeight: 52px;
+
+$smallBoxShadow: 0 0 11px 0 $shadowColor;
+$bigBoxShadow: 0 0 94px 0 $shadowColor;
+
+$hoverWhiteColor: rgba(255, 255, 255, .7);
+$listHoverBgColor: rgba(64, 169, 255, 0.28);
+$listActiveBgColor: rgba(64, 169, 255, 0.5);
+
 @keyframes orb {
   from {
     transform:rotate(0deg)
