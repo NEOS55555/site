@@ -1,0 +1,14 @@
+.top10-list {
+	.title {
+		color: $titleFontColor;
+		font-size: $titleFontSize;
+	}
+	ul {
+		margin: 0;
+		li {
+			a {
+				text-decoration: underline;
+			}
+		}
+	}
+}

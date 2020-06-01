@@ -18,5 +18,14 @@
 				color: $fontColor;
 			}
 		}
+		.ant-input-group-addon {
+			background-color: transparent;
+			.ant-btn {
+				/*border-left: none;*/
+			}
+			.ant-btn:hover {
+				border-color: $borderColor;
+			}
+		}
 	}
 }

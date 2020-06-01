@@ -3,6 +3,8 @@ import './RightNav.scss'
 import {connect} from 'react-redux'
 import { Menu } from 'antd';
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import { isSystemPage } from '@/common/common'
 // import { getCatalogList } from '@/store/actions'
 
 // const { SubMenu } = Menu;
@@ -33,20 +35,21 @@ class RightNav extends Component {
     }
   };*/
 	render () {
-		const { catalogList, isSystem } = this.props;
-		// console.log(this.props.catalogList)
+		const { catalogList, match } = this.props;
+		// console.log(match.params.catalog)
 		return (
-      <div className="nav-list">
+      <div className="nav-list catalog-nav">
+        <div className="title">分类</div>
   			<Menu
           // mode="inline"
           // theme="dark"
-          // defaultSelectedKeys={this.props.defaultSelectedKeys}
+          selectedKeys={[match.params.catalog || '0']}
           // onOpenChange={this.onOpenChange}
           // onSelect={onSelect}
           style={{ width: 256 }}
         >
         	{
-        		catalogList.map(({_id, name}) => <Menu.Item key={_id}><Link to={(isSystem ? '/system' : '') + '/' + _id} >{name}</Link></Menu.Item>)
+        		catalogList.map(({_id, name}) => <Menu.Item key={_id}><Link to={(isSystemPage(match) ? '/system' : '') + '/' + _id} >{name}</Link></Menu.Item>)
         	}
           
         </Menu>
@@ -57,7 +60,7 @@ class RightNav extends Component {
 const mapStateToProps = state => {
 	const {catalogList} = state.siteMng
   return {
-  	catalogList,
+  	catalogList: [{_id: 0, name: '全部'} ,...catalogList],
   };
 };
 
@@ -69,4 +72,4 @@ const mapStateToProps = state => {
   	},
   };
 };*/
-export default connect(mapStateToProps, null)(RightNav);
+export default withRouter(connect(mapStateToProps, null)(RightNav));

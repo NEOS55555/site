@@ -90,7 +90,7 @@ var RENDERER = {
         this.translationCount++;
         this.translationCount %= this.TRANSLATION_COUNT;
 
-        if (this.translationCount == 0) {
+        if (this.translationCount === 0) {
             this.setupFigure();
         }
     }

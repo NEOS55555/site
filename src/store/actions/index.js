@@ -3,28 +3,37 @@ import url from '@/common/api'
 import cookie from 'react-cookies';
 import { message } from 'antd';
 import loading from '@/commonComp/Loading'
+import { removeLoginCookie } from '@/commonComp/logReg/loginCookie'
 
 export const UPDATE_DATA = 'UPDATE_DATA';    // 这个只是修改siteMng里的数据 ，别他妈搞忘了
+export const UPDATE_COM_DATA = 'UPDATE_COM_DATA';    // 这个修改公共的数据
 export const UPDATE_LIST = 'UPDATE_LIST';
 export const UPDATE_CATALOG_LIST = 'UPDATE_CATALOG_LIST';
 export const SET_USER_NAME = 'SET_USER_NAME';
 export const UPDATE_TOP10_LIST = 'UPDATE_TOP10_LIST';
 
 axios.interceptors.request.use(
-config => {
-  loading.transShow();
-  return config
-},
-err => {
-  return Promise.reject(err)
-})
+  config => {
+    loading.transShow();
+    return config
+  },
+  err => {
+    loading.close();
+    message.error('系统错误！')
+    return Promise.reject(err)
+  }
+)
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
   // 对响应数据做点什么
   // console.log(response)
-  if (response.data.resultCode && (response.data.resultCode !== 200)) {
+  const { resultCode } = response.data
+  if (resultCode && (resultCode !== 200)) {
     message.error(response.data.resultMessage)
+    if (resultCode === 233) {
+      removeLoginCookie()
+    }
   }
   return response;
 }, function (error) {
@@ -65,15 +74,23 @@ export function setUsername (data) {
 
 // 获取注册用的验证码
 export const getRegCode = params => axios.post(url + '/sendRegMailCode', params).then(res => res.data)
+// 获取重置密码用的验证码
+export const getRestCode = params => axios.post(url + '/sendRestPswCode', params).then(res => res.data)
+export const resetPassword = params => axios.post(url + '/resetPassword', params).then(res => res.data)
 
 // 注册，成功后，自动登录
 export const register = params => axios.post(url + '/register', params).then(res => res.data)
 export const login = params => axios.post(url + '/login', params).then(res => res.data)
 
 // 这接口貌似没卵用啊-放屁-检测该用户有没有点击的时候是有用的
-export const getIP = () => axios.get(url + '/getIP').then(res => res.data)
+export const getIP = () => axios.get(url + '/getIP', {headers: getAuthorization()}).then(res => res.data)
 export const setRate = params => axios.post(url + '/setRate', params).then(res => res.data)
 export const addView = params => axios.post(url + '/addView', params).then(res => res.data)
+export const reportCommit = params => axios.post(url + '/reportCommit', params, {headers: getAuthorization()}).then(res => res.data)
+export const getReportCommit = params => axios.get(url + '/getReportCommit', {params}).then(res => res.data)
+
+// 获取单个信息
+export const getSiteDetail = params => axios.get(url + '/getSiteDetail', {params}).then(res => res.data)
 
 // 获取top10最热网站
 export const getTop10SiteList = () => dispatch => {
@@ -95,6 +112,7 @@ export const getSiteList = params => dispatch => {
 // 得到网页列表
 // catalog, status, pageIndex, pageSize, isTotal
 export const getCatalogList = params => dispatch => axios.post(url + '/getCatalogList', params).then(res => {
+  // console.log(res.data.result || [])
   dispatch(updateCatalogList(res.data.result))
 })
 

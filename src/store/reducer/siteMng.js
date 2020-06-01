@@ -22,24 +22,24 @@ export default (state = initState, {type, data}) => {
       if (data.total !== undefined) {
         return {
           ...state,
-          siteList: data.list,
+          siteList: data.list || [],
           siteTotal: data.total
         }
       } else {
       	return {
       		...state,
-      		siteList: data.list
+      		siteList: data.list || []
       	}
       };
     case UPDATE_CATALOG_LIST: 
       return {
         ...state,
-        catalogList: data.list
+        catalogList: data.list || []
       }
     case UPDATE_TOP10_LIST: 
       return {
         ...state,
-        top10List: data.list
+        top10List: data.list || []
       }
     default:
       return state

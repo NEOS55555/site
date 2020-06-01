@@ -5,7 +5,7 @@
   border-radius: 4px;
   transition: .2s all;
   /*border-bottom: 2px solid #f6f6f6;*/
-  box-shadow: 1px 1px 34px #484545;
+  box-shadow: getMiddleShadow($shadowDarkColor);
 	.site-title {
 		font-size: 18px;
     font-weight: 600;
@@ -17,12 +17,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    span {
-    	cursor: pointer;
+    a {
+    	text-decoration: underline;
     }
+    /* span {
+    	cursor: pointer;
+    } */
     .anticon-close {
     	cursor: pointer;
     }
+	}
+	.sit-sub-text {
+		margin: .2rem 0;
+		line-height: 1;
+		color: $fontColor;
 	}
 	.rich-head {
 		display: inline-block;
@@ -87,6 +95,12 @@
   box-shadow: 1px 1px 94px #afd4f3;
   /*animation: shadow 2s linear infinite;*/
 
+}
+.site-item.only-show {
+	transform: none;
+}
+.site-item.only-show:hover {
+	box-shadow: getMiddleShadow($shadowDarkColor);
 }
 
 /* @keyframes shadow {

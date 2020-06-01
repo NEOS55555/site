@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
+import './Top10Site.scss'
 // import { Menu } from 'antd';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 // import { getTop10SiteList } from '@/store/actions'
 import { addView } from '@/store/actions'
 
@@ -30,14 +31,14 @@ class Top10Site extends Component {
       });
     }
   };*/
-  componentDidMount () {
+  /*componentDidMount () {
     console.log('Top10Site mounted')
-  }
+  }*/
 	render () {
-		const { top10List, isSystem } = this.props;
+		const { top10List } = this.props;
 		return (
       <div className="top10-list">
-        <h3>本月最热</h3>
+        <h3 className="title">本月最热</h3>
   			<ul
           // mode="inline"
           // theme="dark"
@@ -47,7 +48,7 @@ class Top10Site extends Component {
           style={{ width: 256 }}
         >
         	{
-        		top10List.map(({_id, name, url}) => <li key={_id}><a href={url} target="_blank" onClick={() => addView({_id})} >{name}</a></li>)
+        		top10List.map(({_id, name, url}) => <li key={_id}><a href={url} rel="noopener noreferrer" target="_blank" onClick={() => addView({_id})} >{name}</a></li>)
         	}
           
         </ul>

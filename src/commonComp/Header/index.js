@@ -3,19 +3,18 @@ import { Button } from 'antd';
 import { isSystemPage } from '@/common/common'
 import { setUsername, UPDATE_DATA } from '@/store/actions'
 import {connect} from 'react-redux'
-import Register from '@/commonComp/popup/Register'
-import Login from '@/commonComp/popup/Login'
+import Register from '@/commonComp/logReg/Register'
+import Login from '@/commonComp/logReg/Login'
 import { addWebSite } from '@/components/AddWebSite/AddWebSite'
 import AddCatalog from '@/components/AddWebSite/AddCatalog'
 // import imgUrl from '@/common/api'
-import cookie from 'react-cookies'
+// import cookie from 'react-cookies'
 import { withRouter } from "react-router";
 import { getSiteList, getCatalogList, getTop10SiteList } from '@/store/actions'
 import { Link } from "react-router-dom";
 import { Dropdown, Menu, Input } from 'antd'
-import { removeLoginCookie } from '../popup/loginCookie'
+import { removeLoginCookie } from '@/commonComp/logReg/loginCookie'
 import './Header.scss'
-
 
 
 class Header extends Component {
@@ -30,7 +29,7 @@ class Header extends Component {
   componentDidMount () {
     this.props.getCatalogList()
     this.props.getTop10SiteList()
-    console.log('Header did mount')
+    // console.log('Header did mount')
   }
   
   logout = () => {
@@ -50,16 +49,14 @@ class Header extends Component {
       }
     });
   }
-
+  
+  
   // 搜索框
-  onSearch = e => {
+  onSearch = value => {
     const { updateDate, match } = this.props
-    if (e.keyCode !== 13) {
-      return;
-    }
     const catalog = parseInt(match.params.catalog) || -1
-    const { getSiteList, catalogList, pageIndex, pageSize, status } = this.props
-    const search = e.target.value
+    const { getSiteList, pageIndex, pageSize, status } = this.props
+    const search = value
     updateDate({
       search 
     })
@@ -67,29 +64,35 @@ class Header extends Component {
   }
 
 	render() {
+    const { match } = this.props
+    const isSystem = isSystemPage(match);
+
     const menu = (
       <Menu className="user-setting-list">
-        <Menu.Item><Link to="/system">页面管理</Link></Menu.Item>
-        <Menu.Item><a onClick={this.logout}>退出</a></Menu.Item>
+        <Menu.Item><Link to="/system/0">页面管理</Link></Menu.Item>
+        <Menu.Item><span className="link-a" onClick={this.logout}>退出</span></Menu.Item>
       </Menu>
     )
 		const { user_name } = this.props
     return (
       <div className="header">
         <div className="max-container">
-          <Link to="/">首页</Link>
-          <Input style={{width: 200}} onKeyDown={this.onSearch} />
+          <div>
+            <Link to="/">首页</Link>
+            <Input.Search placeholder="请输入关键词" onSearch={this.onSearch} style={{width: 200}}  enterButton />
+          </div>
           <div className="user-ctn">
           	{
               user_name 
               ? (<Fragment>
-                  <Button type="primary" onClick={this.addNewSite}>新增网站</Button>
-                  <AddCatalog  />
+                  {
+                    isSystem && 
+                      <Button type="primary" onClick={this.addNewSite}>新增网站</Button>
+                  }
+
                   <Dropdown overlay={menu} placement="bottomRight" >
                     <Button type="link" className="user-btn">{user_name}</Button>
                   </Dropdown>
-              
-                  
                 </Fragment>) 
               : (<Fragment><Login /><Register /></Fragment>)
             }

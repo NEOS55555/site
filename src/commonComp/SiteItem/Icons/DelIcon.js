@@ -60,8 +60,8 @@ class CloseIcon extends Component {
 
 		return (
 				status === NORMAL_CODE
-				? <VerticalAlignBottomOutlined onClick={this.showModel} />
-				: <CloseOutlined style={{color: '#fff'}} onClick={this.showModel} />
+				? <VerticalAlignBottomOutlined title="下架" onClick={this.showModel} />
+				: <CloseOutlined title="删除" style={{color: '#fff'}} onClick={this.showModel} />
 		)
 	}
 }

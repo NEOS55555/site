@@ -1,5 +1,6 @@
 .site-wrapper {
 	display: flex;
+	color: $fontColor;
 	justify-content: center;
 	/* background: #f6f6f6; */
 	.ant-pagination {
@@ -27,10 +28,13 @@
 		}
 	}
 }
-
-.site-container {
-	/* background: #fff; */
+.site-box {
 	width: 694px;
+
+}
+.site-container {
+	width: 100%;
+	/* background: #fff; */
 	/*position: relative;*/
 	/*z-index: 1;*/
 
