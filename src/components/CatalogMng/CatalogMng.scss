@@ -1,0 +1,19 @@
+.catalog-wrapper {
+	.ant-list-items {
+		.ant-list-item {
+			display: inline-block;
+			color: $fontColor;
+			border: 1px solid #ccc;
+			padding: 5px;
+			margin-right: 10px;
+			margin-bottom: 10px;
+			span.text {
+				margin-right: 15px;
+			}
+			.icon {
+				margin-left: 5px;
+				cursor: pointer;
+			}
+		}
+	}
+}

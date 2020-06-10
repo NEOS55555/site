@@ -1,0 +1,10 @@
+.diy-edit-max {
+	position: relative;
+	color: $fontColor;
+	.diy-tip {
+		position: absolute;
+		right: 8px;
+		bottom: 5px;
+		font-size: 12px;
+	}
+}

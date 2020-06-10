@@ -1,0 +1,36 @@
+.site-detail {
+	& > .title {
+		font-size: 16px;
+		margin-top: 20px;
+	}
+}
+.recomd-wrapper {
+	padding: 10px 0;
+	ul {
+		font-size: 0;
+		li {
+			display: inline-block;
+			vertical-align: top;
+			width: calc((100% - 15px * 2) / 3);
+			font-size: 1rem;
+			margin-right: 15px;
+			margin-bottom: 15px;
+
+			&:nth-child(3n) {
+				margin-right: 0;
+			}
+			p {
+				margin-bottom: 8px;
+			}
+			.img-ctn {
+				width: 100%;
+				height: 200px;
+				overflow: hidden;
+				img {
+					height: 100%;
+				}
+			}
+			
+		}
+	}
+}

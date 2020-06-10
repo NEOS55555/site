@@ -1,0 +1,26 @@
+.comment-container {
+	/*margin-top: 20px;*/
+	.comment-list {
+		/*border: 1px solid $borderColor;*/
+		.reply-ctn {
+			.check-reply {
+				cursor: pointer;
+			}
+		}
+		& > .comment-item {
+			box-shadow: 0 0 11px #484545;
+			/*border-bottom: 1px solid $borderColor;*/
+			padding: 15px;
+			&:not(:last-child) {
+				margin-bottom: 15px;
+			} 
+		}
+	}
+	.no-commit {
+		padding: 10px;
+		color: #ccc;
+	}
+}
+.reply-ctn {
+	margin-top: 1rem;
+}

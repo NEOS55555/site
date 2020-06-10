@@ -1,0 +1,38 @@
+.right-content {
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 256px;
+	.nav-list {
+		.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+			background: $listHoverBgColor;
+		}
+		.title {
+			padding: 5px 10px;
+		}
+	}
+
+	.nav-list:not(:last-child) {
+		margin-bottom: 15px;
+	}
+	.search-btn {
+		margin-bottom: 25px;
+		padding: 0 5px;
+	}
+}
+
+.top10-list {
+	ul {
+		margin: 0;
+		padding: 5px 10px;
+	}
+}
+
+.newest-comment-wrapper.comment-container {
+	.comment-list > .comment-item {
+		padding: 10px;
+		box-shadow: none;
+		&:not(:last-child) {
+			margin-bottom: 0;
+		}
+	}
+} 

@@ -1,0 +1,27 @@
+.reply-comment-container {
+	padding-top: 20px;
+	/*margin-top: 10px;*/
+	.reply-btn-line {
+		/* display: flex;
+		flex-direction: row-reverse; */
+		text-align: right;
+	}
+	.comment-container {
+		margin: 0;
+		.comment-list {
+			border: none;
+			& > .comment-item {
+				border: none;
+				box-shadow: none;
+				&:not(:last-child) {
+					margin-bottom: 0;
+				}
+			}
+		}
+		
+	}
+}
+.collspae-btn {
+	cursor: pointer;
+	color: #ccc;
+}
