@@ -4,23 +4,18 @@ import SiteItem from '@/commonComp/SiteItem'
 // import { delSite } from '@/store/actions'
 import { Pagination } from 'antd'
 import Empty from '@/commonComp/Empty'
-import RightNav from '@/commonComp/RightNav'
-import StatusNav from '@/commonComp/StatusNav'
-import Top10Site from '@/components/Top10Site'
-
 
 import './Content.scss';
 
 class Content extends PureComponent {
-
   render () {
   	// const { visible, confirmLoading } = this.state;
   	const {list=[], total, current, pageSize, onChange, onShowSizeChange, isSystem} = this.props;
   	// console.log(current)
   	return (
-		  <div className="site-wrapper container">
+		  <div className="site-wrapper">
 		  	{/*<div className="max-container">*/}
-					<div className="site-box">
+					<div className="main-content">
 						{
 							list.length > 0 
 							?	(
@@ -53,13 +48,6 @@ class Content extends PureComponent {
 							: <Empty />
 						}
 					</div>
-			  	
-	  			<div className="right-content">
-		  			{
-		  				isSystem ? <StatusNav /> : <Top10Site />
-		  			}
-	  				<RightNav/>
-	  			</div>
 		  	{/*</div>*/}
 		
 	  	</div>

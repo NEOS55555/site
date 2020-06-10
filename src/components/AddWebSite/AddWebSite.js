@@ -8,19 +8,21 @@ import {
 	getBase64,
 	getStrChartLen,
 	checkUrl,
-	trim
+	// trim
 } from '@/common/common'
 
 import {
 	siteNameTip,
 	siteNameErrorText,
 	MAX_SIT_NAME,
-	siteDescTip,
+	// siteDescTip,
 	MAX_SIT_DESC,
-	
+	siteErrorText,
+
 	siteImgTip,
 	MAX_IMG_SIZE,
 	siteImgErrorText,
+
 	descControls
 } from '@/common/constant'
 import ReactDOM from 'react-dom';
@@ -29,8 +31,10 @@ import imgUrl from '@/common/api'
 import defaultImg from '@/assets/images/black-hole.png';
 // import cookie from 'react-cookies'
 import BraftEditor from 'braft-editor'
+import { ContentUtils } from 'braft-utils'
+import BraftEditorMax from '@/commonComp/BraftEditorMax'
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 const { Option } = Select;
 
 
@@ -39,10 +43,11 @@ class AddWebSite extends Component {
 	constructor (props) {
 		super(props);
 		this.fileInput = createRef();
+		const desc = BraftEditor.createEditorState('');
 		this.initData = {
 			name: '',
 			url: 'http://',
-			desc: BraftEditor.createEditorState(''),
+			desc: ContentUtils.clear(desc),		// 清除改变值，会触发descChange方法
 		  imgfiles: null,
 			catalog: [],
 			img: '',	// 图片地址
@@ -51,21 +56,23 @@ class AddWebSite extends Component {
 
 			nameError: -1,
 			isUrlError: false,
+
+			descError: -1,
 			// isDescError: false,
 			imgError: -1,
 			// isImgError: -1,
-
-			
-		}
-		this.state = {
-			visible: false,
-			confirmLoading: false,
 			isNameFirst: true,
 			isUrlFirst: true,
 			isDescFirst: true,
 			isImgFirst: true,
 			isCatalogFirst: true,
 			isTagFirst: true,
+			
+		}
+		this.state = {
+			visible: false,
+			confirmLoading: false,
+			
 			...this.initData,
 			// data: {},
 			catalogList: [],
@@ -76,7 +83,7 @@ class AddWebSite extends Component {
 
 	// showModal = config => {
 	open = config => {
-		console.log(this.state)
+		// console.log(this.state)
 		/*const initData = {
 			name: '',
 			url: '',
@@ -89,8 +96,9 @@ class AddWebSite extends Component {
 			// desc: '123',
 		  visible: true,
 			// ...initData,
+			// descError: -1,		// 因为
 		  ...config,
-		  desc: BraftEditor.createEditorState(config.desc)
+		  desc: ContentUtils.insertHTML(this.state.desc, config.desc),
 		});
 		/*axios.get('/api/ip').then((res) => {
 			console.log(res)
@@ -101,7 +109,7 @@ class AddWebSite extends Component {
 		this.setState({confirmLoading: true})
 		const { isEdit } = this.props
 		const { name, url, desc, imgfiles, catalog, handleOk, _id, img, tags } = this.state;
-		console.log(tags)
+		// console.log(tags)
 		
 		let formData = new FormData();
 		formData.append('name', name);
@@ -130,13 +138,12 @@ class AddWebSite extends Component {
 		// tags.length > 0 && formData.append('tags', tags.join(','));
 		// window.abc = formData;
 		;(isEdit ? editSite : addSite)(formData).then(data => {
-			this.setState({confirmLoading: false})
 			// return;
-			if (data.resultCode === 200) {
-				handleOk && handleOk();
-				this.handleOver();
-				message.success(data.resultMessage)
-			}
+			handleOk && handleOk();
+			this.handleOver();
+			message.success(data.resultMessage)
+		}).finally(data => {
+			this.setState({confirmLoading: false})
 		})
 	}
 	handleOver = () => {
@@ -227,11 +234,12 @@ class AddWebSite extends Component {
 		return flag;
 	}
 	fileChange = e => {
-		const files = e.target.files
-		// console.log(files)
-		if (files.length === 0) {
-			return;
-		}
+		let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
 		const [file] = files
 		const imgError = this.checkImg(file);
 		if (imgError !== -1) {
@@ -257,25 +265,40 @@ class AddWebSite extends Component {
 		// console.log(this.fileInput)
 		
 	}
-	descChange = e => {
+	/*descChange = e => {
 		const desc = e.target.value
 		this.setState({
 			desc,
 			isDescFirst: false,
 		})
+	}*/
+
+	descCheck = desc => {
+		// const strlen = desc.toText().length;
+		let flag = -1
+		/*if (strlen > MAX_SIT_DESC) {
+			flag = 0
+		} else */if (desc.isEmpty()) {
+			flag = 1;
+		}
+		return flag;
 	}
 	handleDescChange = (desc) => {
     this.setState({
       desc,
+      descError: this.descCheck(desc),
+      // descError: desc.isEmpty() ? 1 : -1,
       isDescFirst: false,
       // outputHTML: editorState.toHTML()
     })
   }
-	/*descBlur = () => {
+	descBlur = () => {
+		const { desc } = this.state;
 		this.setState({
-			isDescError: getStrChartLen(desc) > MAX_SIT_DESC
+			descError: this.descCheck(desc)
 		})
-	}*/
+	}
+
 	catalogChange = catalog => {
 		// console.log(catalog)
 		if (catalog.length > 3) {
@@ -297,15 +320,10 @@ class AddWebSite extends Component {
 	render() {
     const { 
     	visible, confirmLoading, name, url, desc, catalog, catalogList, img, previewImage, tags,
-    	nameError, isUrlError, imgError,
+    	nameError, isUrlError, imgError, descError,
     	isNameFirst, isUrlFirst, isImgFirst, isDescFirst, isCatalogFirst, isTagFirst
     } = this.state;
 		const { isEdit } = this.props;
-		console.log(desc.isEmpty())
-		// console.log(`previewImage: ${!!previewImage}, img ${img}`)
-		// console.log(previewImage)
-    // const { catalogList=[] } = this.props;
-    // console.log(selectOptions)
     return (
       <Modal
       	width={700}
@@ -320,7 +338,7 @@ class AddWebSite extends Component {
 							disabled={
 								(isNameFirst || isUrlFirst || isImgFirst || isDescFirst || isCatalogFirst || isTagFirst) 
 								? true 
-								: (nameError!==-1 || isUrlError || isUrlError || desc.isEmpty() || imgError !== -1 || catalog.length === 0 || tags.length === 0)
+								: (nameError!==-1 || isUrlError || isUrlError || descError !== -1 || imgError !== -1 || catalog.length === 0 || tags.length === 0)
 							}
         			loading={confirmLoading} onClick={this.handleOk} type="primary"
         		>上架</Button>
@@ -362,15 +380,21 @@ class AddWebSite extends Component {
 					<div className="self-line must">
 						<label>描述</label>
 						
-							<BraftEditor
-								controls={descControls}
+						<div className="self-text-wrapper">
+							<BraftEditorMax 
+                controls={descControls}
+          			className={"normal-edit " + (descError !== -1 ? 'error' : '')}
 		            value={desc}
-          			className="normal-edit"
-		            placeholder="请输入网站描述"
-		            onChange={this.handleDescChange}
-		          />
+                maxLen={MAX_SIT_DESC} 
+                onBlur={this.descBlur}
+                onChange={this.handleDescChange} 
+              />
 							
-						{/*<Popover placement="topLeft" content={<div>{siteDescTip}</div>} trigger="hover"><TextArea autoSize={{minRows: 2, maxRows: 6}} maxLength={MAX_SIT_DESC} onBlur={this.descBlur} onChange={this.descChange} value={desc} /></Popover>*/}
+		          {
+								descError !== -1 && <p className="error-tip">{siteErrorText[descError]}</p>
+							}
+						</div>
+							
 					</div>
 					<div className="self-line must">
 						<label>图片</label>

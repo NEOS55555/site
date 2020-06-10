@@ -101,7 +101,7 @@ var STRATEGY = {
     RING_COUNT: 5,
 
     getStrategies: function () {
-        return [this.createTorus.bind(this), this.createSphere.bind(this)]
+        return [this.createTorus.bind(this), this.createSphere.bind(this), this.createVase.bind(this)]
         /*var strategies = [];
 
         for (var i in this) {
@@ -158,7 +158,7 @@ var STRATEGY = {
             z: x * Math.sin(phi),
             hue: Math.round(phi / Math.PI * 30)
         };
-    },
+    },*/
     createVase: function () {
         var theta = Math.random() * Math.PI,
             x = Math.abs(this.SCATTER_RADIUS * Math.cos(theta) / 2) + this.SCATTER_RADIUS / 8,
@@ -171,7 +171,7 @@ var STRATEGY = {
             z: x * Math.sin(phi),
             hue: Math.round(phi / Math.PI * 30)
         };
-    }*/
+    }
 };
 var PARTICLE = function (center) {
     this.center = center;

@@ -17,9 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    a {
-    	text-decoration: underline;
-    }
+    
     /* span {
     	cursor: pointer;
     } */
@@ -75,7 +73,7 @@
 				li {
 					/*display: inline-block;*/
 					a {
-						color: $fontColor;
+						/*color: $fontColor;*/
 						text-decoration: underline;
 					}
 					a:hover {

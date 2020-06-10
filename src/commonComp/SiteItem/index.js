@@ -13,9 +13,7 @@ import CurContext from '@/components/ComContent/cur-context'
 import { connect } from 'react-redux'
 
 import DelIcon from './Icons/DelIcon'
-import {
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 class SiteItem extends Component {
@@ -25,7 +23,7 @@ class SiteItem extends Component {
 
 		this.state = {
 			rate: props.data.rate,
-			viewsCount: props.data.views,
+			// viewsCount: props.data.views,
 			isRating: false,
 			// hasRated: false,
 		}
@@ -68,11 +66,11 @@ class SiteItem extends Component {
 	// 跳转页面并计算点击量
 	linkTo = () => {
 		const { _id } = this.props.data;
-		addView({_id}).then(data => {
+		addView({_id})/*.then(data => {
 			this.setState({
 				viewsCount: data.result
 			})
-		})
+		})*/
 		// window.open(url)
 	}
 	// 编辑弹窗
@@ -95,7 +93,7 @@ class SiteItem extends Component {
 		// const ctx = this.context;
 		// console.log(ctx);
 		const { data, isSystem, catalogList, is_async, onlyShow } = this.props;
-		console.log('is_async', is_async)
+		// console.log('is_async', is_async)
 		const { isRating, rate } = this.state;
 		const catalogMap = {};
 		catalogList.forEach(it => {
@@ -103,8 +101,9 @@ class SiteItem extends Component {
 		})
 		// console.log(catalogMap)
 		const rateval = rate.value / rate.length || 0;
-		const { name, url: site_url, status, desc, img, create_time, catalog=[], tags: ttags, create_user_name, views } = data;
+		const { _id, name, url: site_url, status, desc, img, create_time, catalog=[], tags: ttags, create_user_name, views, commit_total } = data;
 		const tags = ttags || [];
+		const isNormal = status === NORMAL_CODE
 		// <div className="rich-content-text" dangerouslySetInnerHTML={{__html: desc}} ></div>
 		
 		return (
@@ -112,12 +111,16 @@ class SiteItem extends Component {
 				{/*<Skeleton avatar  active paragraph={{ rows: 3 }} loading={false} >*/}
 					
 					<h2 className="site-title">
-						<Tooltip placement="right" title={`点击跳转`}>
-							<a href={site_url} rel="noopener noreferrer" target="_blank" onClick={this.linkTo}>{name} {getStatus(status)}</a>
-						</Tooltip>
+						{
+							isNormal ? <Link to={'/sitedetail/' + _id}>{name}</Link> : <span >{name} {getStatus(status)}</span>
+						}
+						
+						{/*<Tooltip placement="right" title={`点击跳转`}>
+							<a className="underline" href={site_url} rel="noopener noreferrer" target="_blank" onClick={this.linkTo}>{name} {getStatus(status)}</a>
+						</Tooltip>*/}
 						
 						{
-							isSystem && (status === NORMAL_CODE ? is_async : true) 
+							isSystem && (isNormal ? is_async : true) 
 							&& <span><EditOutlined title="编辑" onClick={this.editClick} style={{marginRight: 8}} /><DelIcon data={data} /></span> 
 						}
 					</h2>
@@ -131,12 +134,12 @@ class SiteItem extends Component {
 						<div className="rich-content-text" dangerouslySetInnerHTML={{__html: desc}} ></div>
 						<div className="rich-content-cover">
 							<div className="rich-content-cover-inner">
-								<img src={url + img} alt=""/>
+								{img && <img src={url + img} alt=""/>}
 							</div>
 						</div>
 						<div className="rich-footer">
 							<ul>
-								<li>发布时间：{create_time}</li>
+								<li>地址：<a className="underline color-blue" href={site_url} rel="noopener noreferrer" target="_blank" onClick={this.linkTo}>{site_url}</a></li>
 								<li>
 									分类： 
 									{
@@ -158,9 +161,14 @@ class SiteItem extends Component {
 									}
 								</li>
 								<li>作者：{create_user_name}</li>
+								<li>发布时间：{create_time}</li>
 							</ul>
-							
-							
+							{
+								isNormal && !onlyShow && 
+								<div className="align-right">
+									<Link className="link-to" to={'/sitedetail/'+_id} >查看评论({commit_total})</Link>
+								</div>
+						}
 						</div>
 					</div>
 				{/*</Skeleton>*/}

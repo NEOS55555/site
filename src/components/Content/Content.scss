@@ -1,37 +1,14 @@
 .site-wrapper {
-	display: flex;
+	/*display: flex;*/
 	color: $fontColor;
-	justify-content: center;
+	/*justify-content: center;*/
 	/* background: #f6f6f6; */
-	.ant-pagination {
-		color: #fff;
-		margin-top: 1rem;
-		.ant-pagination-item-link {
-			color: #fff;
-		}
-		.ant-pagination-prev,
-		.ant-pagination-next {
-			background: transparent;
-		}
-		.ant-pagination-disabled a {
-			color: rgba(255, 255, 255, .6);
-		}
-		.ant-pagination-item a {
-			color: #fff;
-		}
-		.ant-pagination-item-active {
-			background: transparent;
-			border-color: transparent;
-			a {
-				color: #1890ff;
-			}
-		}
-	}
+	
 }
-.site-box {
+/* .site-box {
 	width: 694px;
 
-}
+} */
 .site-container {
 	width: 100%;
 	/* background: #fff; */
@@ -44,7 +21,3 @@
 }
 
 
-.right-content {
-	margin-left: 10px;
-	margin-top: 10px;
-}

@@ -8,7 +8,17 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	.logo-ctn {
+		display: flex;
+    align-items: center;
+		a {
+			margin-right: 15px;
 
+		}
+		img {
+			width: 45px;
+		}
+	}
 	.max-container {
 		display: flex;
     /*flex-direction: row-reverse;*/

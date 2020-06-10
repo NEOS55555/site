@@ -1,3 +1,10 @@
+.main-content-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.main-content {
+    width: 734px;
+}
 .self-wrapper.flex {
     .self-line {
         display: flex;
@@ -13,12 +20,14 @@
     .self-line {
         .self-text-wrapper {
             width: 100%;
+            .bf-container {
+                height: auto;
+            }
         }
 		/*flex-direction: column; */
         label {
             color: #fff;
             display: block;
-            width: 50px;
         }
     
         .img-ctn {
@@ -42,11 +51,7 @@
             }
         }
 
-        .error-tip {
-            color: $errorColor;
-            padding-top: .1rem;
-            font-size: 12px;
-        }
+        
 
     }
 
@@ -67,7 +72,11 @@
         padding: 24px;
     }
 }
-
+.error-tip {
+    color: $errorColor;
+    padding-top: .1rem;
+    font-size: 12px;
+}
 .self-footer {
 
     /* padding: 10px 16px;
@@ -90,7 +99,23 @@
 }
 
 /**************************/
-
+.ant-menu-root.ant-menu-vertical, .ant-menu-root.ant-menu-vertical-left, .ant-menu-root.ant-menu-vertical-right, .ant-menu-root.ant-menu-inline,
+.ant-menu {
+    background: transparent;
+    box-shadow: getBigShadow($shadowDarkColor);
+}
+.ant-menu-item:active, .ant-menu-submenu-title:active {
+    background: $listActiveBgColor;
+}
+.ant-menu-item > a {
+    color: $fontColor;
+}
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+    border: none;
+}
+.ant-menu-item:hover, .ant-menu-submenu-title:hover {
+    background: $listHoverBgColor;
+}
 .ant-select.error:not(.ant-select-disabled) .ant-select-selector,
 .ant-select.error:not(.ant-select-disabled):hover .ant-select-selector,
 .ant-input-password.error,
@@ -135,6 +160,8 @@
 }
 
 a,
+.ant-pagination-jump-prev .ant-pagination-item-container .ant-pagination-item-ellipsis, 
+.ant-pagination-jump-next .ant-pagination-item-container .ant-pagination-item-ellipsis,
 .ant-menu,
 .ant-popover-inner-content,
 .ant-dropdown-menu-item,
@@ -174,7 +201,7 @@ a,
     color: $hoverWhiteColor;
 }
 
-.ant-popover {
+.ant-popover .ant-popover-content {
     background: #000;
 }
 
@@ -188,7 +215,7 @@ a,
     /*box-shadow: 0 3px 6px -4px rgba(149, 195, 232,0.12), 0 6px 16px 0 rgba(149, 195, 232,0.08), 0 9px 28px 8px rgba(149, 195, 232,0.05);*/
     box-shadow: getSmallShadow($shadowColor);
 }
-
+.ant-dropdown-menu,
 .ant-message-notice-content,
 .ant-select-dropdown {
     background: $modalBgColor;
@@ -208,7 +235,8 @@ a,
     background: $modalBgColor;
     color: $fontColor;
     box-shadow: getBigShadow($shadowColor);
-    animation: box 3s linear infinite;
+    animation: box 1s linear infinite;
+    border-radius: 4px;
 }
 
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
@@ -217,15 +245,14 @@ a,
 }
 
 .ant-tooltip-content,
-.ant-dropdown-menu,
+
 .ant-pagination-options-quick-jumper input,
 .ant-input-affix-wrapper {
     background: transparent;
     border-color: $borderColor;
 }
 
-.ant-tooltip-content,
-.ant-dropdown-menu {
+.ant-tooltip-content {
     box-shadow: getSmallShadow($shadowColor);
 }
 
@@ -297,14 +324,45 @@ a,
     }
 
     50% {
-        box-shadow: 0 0 104px 10px $shadowColor;
+        box-shadow: 0 0 94px 10px $shadowColor;
     }
 
     to {
         box-shadow: getBigShadow($shadowColor);
     }
 }
-
+.ant-pagination {
+    color: $fontColor;
+    margin-top: 1rem;
+    .ant-pagination-item-link {
+        color: $fontColor;
+    }
+    .ant-pagination-prev,
+    .ant-pagination-next {
+        background: transparent;
+    }
+    .ant-pagination-disabled a {
+        color: rgba(255, 255, 255, .6);
+    }
+    .ant-pagination-item a {
+        color: $fontColor;
+    }
+    .ant-pagination-item-active {
+        background: transparent;
+        border-color: transparent;
+        a {
+            color: #1890ff;
+        }
+    }
+}
+.ant-pagination-disabled a, 
+.ant-pagination-disabled:hover a, 
+.ant-pagination-disabled:focus a, 
+.ant-pagination-disabled .ant-pagination-item-link, 
+.ant-pagination-disabled:hover .ant-pagination-item-link, 
+.ant-pagination-disabled:focus .ant-pagination-item-link {
+    color: rgba(255, 255, 255, .25);
+}
 /**/
 .container {
     padding-top: $headerHeight + 10px;
@@ -315,13 +373,18 @@ a,
 .max-container {
     width: 1000px;
 }
-
+.align-right {
+    text-align: right;
+}
 .link-a {
     cursor: pointer;
     color: $fontColor;
 }
 
-.link-a.link-to {
+.link-to {
+    text-decoration: underline;
+}
+.link-to:hover {
     text-decoration: underline;
 }
 
@@ -329,10 +392,97 @@ a,
     color: $normalBlue;
 }
 .bf-content {
+    color: $fontColor;
+    font-size: 14px;
     border: 1px solid $borderColor;
 }
-.normal-edit {
+.error {
+    .bf-content {
+        border-color: $errorColor;   
+    }
+}
+.hidden {
+    display: none;
+}
+.normal-edit.bf-container {
     .bf-content {
         height: 110px;
     }
 }
+.small-edit.bf-container {
+    .bf-content {
+        height: 60px;
+    }
+    .public-DraftEditor-content {
+        padding: 10px 5px;
+    }
+}
+.link-btn {
+    cursor: pointer;
+    color: $normalBlue;
+}
+
+.reply-edit-container {
+    .bf-controlbar {
+        padding: 0;
+        position: absolute;
+        bottom: -36px;
+        right: 60px;
+        .control-item {
+            margin: 0;
+        }
+        .control-item:not(:last-child) {
+            margin-right: 3px;
+        }
+    }
+    .reply-btn {
+        float: right;
+    }
+}
+.cropper-modal {
+    opacity: .2;
+}
+
+.bofore-commit-tip {
+    color: #ccc;
+}
+
+.title {
+    color: $titleFontColor;
+    font-size: $titleFontSize;
+}
+.underline {
+    text-decoration: underline;
+}
+.underline:hover {
+    text-decoration: underline;
+}
+.color-blue {
+    color: $normalBlue;
+}
+
+/* ::-moz-scrollbar,
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #fff;
+    border: none;
+}
+ 
+定义滚动条轨道 内阴影+圆角
+::-moz-scrollbar-track,
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 5px;
+    background-color: #fff;
+    border: none;
+}
+ 
+定义滑块 内阴影+圆角
+::-moz-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #000;
+    border: none;
+} */

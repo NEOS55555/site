@@ -7,8 +7,7 @@ import { statusMap, pswTipText } from './constant';
 	}
 	return str.replace(new RegExp(key, 'igm'), `<b>${key}</b>`)
 }*/
-// 发送邮件倒计时
-export const COUNT_DOWN = 60;
+
 export const getStatus = statusCode => {
 	return statusCode !== 1 && <b style={{color: statusCode === 0 ? 'red' : 'orange'}}>({statusMap[statusCode]})</b>
 }
@@ -24,7 +23,7 @@ export const isLegal = (str='') => {
 	/*if (str === '' || str === null) {
 		return false;
 	}*/
-	const reg = /[\s\@\#\$\%\^\&\*\{\}\:\：\.\"\L\<\>\?\|]/ig
+	const reg = /[\s\@\#\$\%\^\&\*\{\}\:\.\"\'\<\>\?\|]/ig
 	return !reg.test(str)
 }
 
@@ -61,7 +60,7 @@ export const isSystemPage = ({path=''}) => path.slice(0, 7) === '/system'
 export const getStrChartLen = (str='') => {  
   let len = 0;  
   for (var i=0; i<str.length; i++) {  
-    if (str.charCodeAt(i)>127 || str.charCodeAt(i)==94) {  
+    if (str.charCodeAt(i)>127 || str.charCodeAt(i)===94) {  
        len += 2;  
      } else {  
        len ++;  
@@ -72,4 +71,25 @@ export const getStrChartLen = (str='') => {
 
 export const checkPassword = (psw='') => {
 	return pswTipText.map(it => it.isok(psw)).reduce((a, pr) => a && pr, true)
+}
+
+// 距离现在多长时间
+export const dateForNow = date => {
+	date = new Date(date);
+	// 相差的秒数
+	const xs = (new Date().getTime() - date.getTime()) / 1000
+	const xm = xs / 60 
+	const xh = xm / 60
+	const xd = xh / 24;
+	if (xd >= 1) {
+		return Math.floor(xd) + '天前'
+	} else if (xh >= 1) {
+		return Math.floor(xh) + '小时前'
+	} else if (xm >= 1) {
+		return Math.floor(xm) + '分钟前'
+	} else if (xs >= 10) {
+		return Math.ceil(xs) + '秒前'
+	} else {
+		return '刚刚';
+	}
 }

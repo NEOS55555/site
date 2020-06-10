@@ -5,7 +5,7 @@ import Content from '../Content/Content'
 import { connect } from 'react-redux'
 // import './SystemComp.scss';
 // import { Button } from 'antd'
-import { getSiteList, UPDATE_DATA } from '@/store/actions'
+import { getSiteList, updateSiteMngData } from '@/store/actions'
 import { withRouter } from "react-router";
 
 import CurContext from './cur-context';
@@ -15,12 +15,13 @@ class ComContent extends Component {
 		
 	getsys () {
 
-		const { isSystem, status } = this.props;
+		const { isSystem, status, match: { params: { catalog, tagName, search } } } = this.props;
 		return {
-			catalog: parseInt(this.props.match.params.catalog) || -1,
+			catalog: parseInt(catalog) || -1,
 			status: isSystem ? status : 1,
 			is_edit: !!isSystem,
-			tag_name: this.props.match.params.tagName
+			tag_name: tagName,
+			search
 		}
 	}
 
@@ -34,38 +35,51 @@ class ComContent extends Component {
 		}
 	}
 	componentDidUpdate (prevProps) {
+		const { isSystem } = this.props;
 		const { params: prevParams } = prevProps.match
 		const { params: curParams } = this.props.match
 		// console.log(prevParams, curParams)
-		if (prevParams.catalog !== curParams.catalog || prevParams.tagName !== curParams.tagName) {
-       // this.handleOk();
-       this.getListAndSet({pageIndex: 1, isTotal: true})
-     }
+		if (prevParams.catalog !== curParams.catalog || prevParams.tagName !== curParams.tagName || prevParams.search !== curParams.search) {
+      // this.handleOk();
+      this.props.updateSiteMngData({
+      	catalog: parseInt(curParams.catalog) || -1,
+      	isSystem,
+      	// search: curParams.search
+      })
+      this.getListAndSet({pageIndex: 1, isTotal: true})
+    }
 	}
 	componentDidMount () {
+		const { isSystem, match: { params: { catalog } } } = this.props;
+		console.log('commonComp did mount ', isSystem)
+    this.props.updateSiteMngData({
+    	catalog: parseInt(catalog) || -1,
+    	isSystem,
+    	// search
+    })
     this.getListAndSet({pageIndex: 1, isTotal: true})
 	}
 
 	handleOk = () => {
-		const { pageIndex, pageSize, search } = this.props;
+		const { pageIndex, pageSize } = this.props;
 		/*const { pageIndex: tPageindex, pageSize } = this.props;
 		const { siteTotal } = this.props;
 		const max = Math.ceil((siteTotal-dels) / pageSize)
 		const pageIndex = tPageindex > max ? max : tPageindex;
 		console.log(pageIndex, max, dels, siteTotal, pageSize)*/
-		this.props.getSiteList({ pageIndex, pageSize, search, isTotal: true, ...this.getsys() });
+		this.props.getSiteList({ pageIndex, pageSize, isTotal: true, ...this.getsys() });
 	}
 
 	getListAndSet = (params) => {
-		const { pageIndex: sPageIndex, pageSize: sPageSize, search } = this.props;
+		const { pageIndex: sPageIndex, pageSize: sPageSize } = this.props;
 
 		const { pageIndex=sPageIndex, pageSize=sPageSize, isTotal } = params;
 		// console.log(catalog)
-		this.props.updateDate({pageIndex, pageSize})
+		this.props.updateSiteMngData({pageIndex, pageSize})
 		this.props.getSiteList({
 			pageIndex,
 			pageSize, 
-			search,
+			// search,
 			isTotal,
 			...this.getsys()
 		})
@@ -103,22 +117,25 @@ class ComContent extends Component {
 	}
 }
 const mapStateToProps = state => {
-	const { siteList, siteTotal, pageIndex, pageSize, status, search } = state.siteMng
+	const { siteList, siteTotal, pageIndex, pageSize, status } = state.siteMng
   return {
   	siteList,
   	siteTotal,
   	pageIndex, pageSize,
   	status,
-  	search
+  	// search
   };
 };
 
 
 const mapDispatchToProps = dispatch => {
   return {
-  	updateDate (data) {
-  		return dispatch({type: UPDATE_DATA, data})
+  	updateSiteMngData (data) {
+  		return dispatch(updateSiteMngData(data))
   	},
+  	/*setCatalog (data) {
+  		return dispatch(setCatalog(data))
+  	},*/
   	getSiteList (params) {
 			return dispatch(getSiteList(params))
   	},
