@@ -108,7 +108,7 @@ class AddWebSite extends Component {
 	handleSite = (status) => {
 		this.setState({confirmLoading: true})
 		const { isEdit } = this.props
-		const { name, url, desc, imgfiles, catalog, handleOk, _id, img, tags } = this.state;
+		const { name, url, desc, imgfiles, catalog, handleOk, handleError, _id, img, tags } = this.state;
 		// console.log(tags)
 		
 		let formData = new FormData();
@@ -142,6 +142,8 @@ class AddWebSite extends Component {
 			handleOk && handleOk();
 			this.handleOver();
 			message.success(data.resultMessage)
+		}).catch(res => {
+			handleError && handleError(res);
 		}).finally(data => {
 			this.setState({confirmLoading: false})
 		})
@@ -154,7 +156,7 @@ class AddWebSite extends Component {
 		});
 	}
 	// 上架
-	handleOk = () => {
+	handleSure = () => {
 		this.handleSite(1)
 	};
 	// 草稿
@@ -340,7 +342,7 @@ class AddWebSite extends Component {
 								? true 
 								: (nameError!==-1 || isUrlError || isUrlError || descError !== -1 || imgError !== -1 || catalog.length === 0 || tags.length === 0)
 							}
-        			loading={confirmLoading} onClick={this.handleOk} type="primary"
+        			loading={confirmLoading} onClick={this.handleSure} type="primary"
         		>上架</Button>
       		</div>
       	)}
@@ -351,7 +353,7 @@ class AddWebSite extends Component {
 				maskClosable={false}
 				confirmLoading={confirmLoading}
 				onCancel={this.handleCancel}
-				// onOk={this.handleOk}
+				// onOk={this.handleSure}
 				// okText="提交"
 				// cancelText="取消"
       >

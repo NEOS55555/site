@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Button, Pagination } from 'antd';
 import './CommentReplyCtn.scss'
 import CommentItem from '../CommentItem'
-import { replyCommit, getReplyCommit } from '@/store/actions'
-import { MAX_COMMIT_LEN } from '@/common/constant'
+import { replyCommit, getReplyCommit, setUsername } from '@/store/actions'
+import { MAX_COMMIT_LEN, LOG_OVERDUE_CODE } from '@/common/constant'
 import { connect } from 'react-redux'
 
 // 把UPDATE_DATA 修改一下 改成函数，不要到处写
@@ -79,13 +79,14 @@ class CommentReplyCtn extends Component {
       to_user_id,
       // to_user_name
     }).then(res => {
-      
-      if (res.resultCode === 200) {
-        this.setState({
-          commitContent: ContentUtils.clear(this.state.commitContent),
-          replyList: [...replyList, res.result],
-          replyTotal: replyTotal + 1
-        })
+      this.setState({
+        commitContent: ContentUtils.clear(this.state.commitContent),
+        replyList: [...replyList, res.result],
+        replyTotal: replyTotal + 1
+      })
+    }).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        this.props.setUsername('')
       }
     }).finally(res => this.setState({ confirmLoading: false }))
   }
@@ -180,6 +181,12 @@ const mapStateToProps = state => {
     user_name
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsername (name) {
+      return dispatch(setUsername(name))
+    },
+  };
+};
 
-
-export default connect(mapStateToProps, null)(CommentReplyCtn);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentReplyCtn);

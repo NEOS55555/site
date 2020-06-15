@@ -1,9 +1,10 @@
-import { UPDATE_LIST, UPDATE_CATALOG_LIST, UPDATE_DATA, UPDATE_TOP10_LIST, SET_CATALOG } from '../actions';
+import { UPDATE_LIST, UPDATE_CATALOG_LIST, UPDATE_DATA, UPDATE_TOP10_LIST, SET_CATALOG, UPDATE_CATALOG_LIST_SITE } from '../actions';
 const initState = {
   top10List: [],  // top10网站
   siteList: [],
   siteTotal: 0,
   catalogList: [],
+  catalogListSite: [],
   pageIndex: 1,
   pageSize: 5,
   search: '',
@@ -36,6 +37,11 @@ export default (state = initState, {type, data}) => {
       return {
         ...state,
         catalogList: data.list || []
+      }
+    case UPDATE_CATALOG_LIST_SITE: 
+      return {
+        ...state,
+        catalogListSite: data.list || []
       }
     case UPDATE_TOP10_LIST: 
       return {

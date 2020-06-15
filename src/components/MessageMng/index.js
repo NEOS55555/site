@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { getReplyMeList, clearreplynum, setReplyNum } from '@/store/actions'
+import { getReplyMeList, clearreplynum, setReplyNum, setUsername } from '@/store/actions'
+import { withRouter } from "react-router";
 import { Pagination } from 'antd'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
+import { FEEDBACK_SITEID, LOG_OVERDUE_CODE } from '@/common/constant'
 import './MessageMng.scss'
 
 
@@ -21,6 +23,8 @@ class MessageMng extends Component {
     clearreplynum().then(res => this.props.setReplyNum(0))
   }
   getReplyMeList = (params) => {
+    const { setUsername, history } = this.props;
+
     getReplyMeList(params).then(res => {
       const { list, total } = res.result
       this.setState({
@@ -31,6 +35,11 @@ class MessageMng extends Component {
           total
         })
       }
+    }).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        setUsername('')
+        history.replace('/')
+      }
     })
   }
   onChange = (pageIndex) => {
@@ -40,28 +49,33 @@ class MessageMng extends Component {
 	render() {
     // const { siteId } = this.props.match.params
     const { list, total, pageIndex } = this.state;
+
     return (
       <div className="message-wrapper main-content">
         <div className="message-container">
           <div className="message-list">
             <ul>
               {
-                list.map(it => 
-                  <li key={it._id}>
+                list.map(it => {
+                  const isFeedback = it.site_id === FEEDBACK_SITEID;
+
+                  const linkurl = isFeedback ? '/feedback' : '/sitedetail/' + it.site_id
+
+                  return <li key={it._id}>
                     <div className="rich-left">
-                      <Link to={'/sitedetail/' + it.site_id} className="rich-ctn" >
+                      <Link to={linkurl} className="rich-ctn" >
                         <div className="message-user" >{it.user_name}：</div>
                         <div className="message-content" dangerouslySetInnerHTML={{__html: it.content}} ></div>
                       </Link>
                       <div className="resp-subject">
-                        回复我的页面：<Link to={'/sitedetail/' + it.site_id} >{it.site_name}</Link>
+                        回复我的页面：<Link to={linkurl} >{isFeedback ? '用户反馈' : it.site_name}</Link>
                       </div>
                     </div>
                     <div className="rich-right">
                       <span className="time">{it.create_time}</span>
                     </div>
                   </li>
-                )
+                })
               }
             </ul>
           </div>
@@ -83,7 +97,11 @@ const mapDispatchToProps = dispatch => {
     setReplyNum (num) {
       return dispatch(setReplyNum(num))
     },
+    setUsername (name) {
+      return dispatch(setUsername(name))
+    },
   };
 };
-export default connect(null, mapDispatchToProps)(MessageMng);
+
+export default withRouter(connect(null, mapDispatchToProps)(MessageMng));
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { List, Modal, Input, message } from 'antd';
 import { ToolOutlined, CloseOutlined } from '@ant-design/icons';
-import { editCatalog, delCatalog, getCatalogList } from '@/store/actions'
+import { editCatalog, delCatalog, getAllCatalog, setUsername } from '@/store/actions'
+import { LOG_OVERDUE_CODE } from '@/common/constant'
 import AddCatalog from '@/components/AddCatalog'
 import { connect } from 'react-redux'
 import './CatalogMng.scss'
@@ -88,8 +89,12 @@ class CatalogMng extends Component {
         editvisible: false,
         currentData: {}
       })
-      this.props.getCatalogList();
+      this.props.getAllCatalog();
       message.success('修改成功！')
+    }).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        this.props.setUsername('')
+      }
     }).finally(() => this.setState({ editloading: false }))
   }
 
@@ -119,8 +124,13 @@ class CatalogMng extends Component {
           delvisible: false,
           currentData: {}
         })
-        this.props.getCatalogList();
+        this.props.getAllCatalog();
         message.success('删除成功！')
+      })
+      .catch(res => {
+        if (res.resultCode === LOG_OVERDUE_CODE) {
+          this.props.setUsername('')
+        }
       })
       .finally(() => this.setState({ delloading: false }))
   }
@@ -177,9 +187,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-   
-    getCatalogList (params) {
-      return dispatch(getCatalogList(params))
+    setUsername (name) {
+      return dispatch(setUsername(name))
+    },
+    getAllCatalog (params) {
+      return dispatch(getAllCatalog(params))
     },
     
   };

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { Button, Pagination } from 'antd';
-import { reportCommit, getReportCommit } from '@/store/actions'
+import { reportCommit, getReportCommit, setUsername } from '@/store/actions'
 import './CommentCtn.scss'
 import CommentItem from '../CommentItem'
 import CommentReplyCtn from '../CommentReplyCtn'
 import { connect } from 'react-redux'
-import { MAX_COMMIT_LEN } from '@/common/constant'
+import { MAX_COMMIT_LEN, LOG_OVERDUE_CODE } from '@/common/constant'
 // 把UPDATE_DATA 修改一下 改成函数，不要到处写
 import BraftEditor from 'braft-editor'
 import { ContentUtils } from 'braft-utils'
@@ -25,6 +25,7 @@ class CommentCtn extends Component {
     }
   }
   getReportCommit = (params={}) => {
+    window.scrollTo(0, 0)
     const { siteId } = this.props
     const { pageIndex } = this.state;
     const { isTotal } = params;
@@ -64,15 +65,14 @@ class CommentCtn extends Component {
     this.setState({confirmLoading: true})
     reportCommit({site_id: siteId, content: commitContent.toText()}).then(res => {
       this.setState({
-        confirmLoading: false,
+        commitContent: ContentUtils.clear(this.state.commitContent),
+        commitList: [...commitList, res.result]
       })
-      if (res.resultCode === 200) {
-        this.setState({
-          commitContent: ContentUtils.clear(this.state.commitContent),
-          commitList: [...commitList, res.result]
-        })
+    }).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        this.props.setUsername('')
       }
-    })
+    }).finally(() => this.setState({ confirmLoading: false }))
     // console.log(siteId)
   }
 
@@ -139,6 +139,12 @@ const mapStateToProps = state => {
     user_name
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsername (name) {
+      return dispatch(setUsername(name))
+    },
+  };
+};
 
-
-export default connect(mapStateToProps, null)(CommentCtn);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentCtn);

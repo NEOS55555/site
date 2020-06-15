@@ -10,7 +10,7 @@ import './Content.scss';
 class Content extends PureComponent {
   render () {
   	// const { visible, confirmLoading } = this.state;
-  	const {list=[], total, current, pageSize, onChange, onShowSizeChange, isSystem} = this.props;
+  	const {list=[], total, current, pageSize, onChange, onShowSizeChange, isSystem, collectClick} = this.props;
   	// console.log(current)
   	return (
 		  <div className="site-wrapper">
@@ -26,6 +26,8 @@ class Content extends PureComponent {
 								  				<SiteItem 
 								  					isSystem={isSystem} 
 								  					key={it._id} 
+								  					collectClick={collectClick}
+								  					isCollected={it.isCollected}
 								  					data={it} 
 								  					// closeClick={() => {this.showModal({_id: it._id, status: it.status})}} 
 								  					// closeClick={handleOk} 

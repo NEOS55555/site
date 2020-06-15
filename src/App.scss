@@ -1,3 +1,6 @@
+body {
+    color: $fontColor;
+}
 .main-content-wrapper {
     display: flex;
     justify-content: center;
@@ -366,6 +369,7 @@ a,
 /**/
 .container {
     padding-top: $headerHeight + 10px;
+    color: $fontColor;
     /*position: relative;*/
     /*z-index: 2;*/
 }

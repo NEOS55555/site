@@ -16,7 +16,7 @@ import CheckPassword from './CheckPassword'
 	return pswTipText.map(it => it.isok(psw))
 }*/
 
-
+// 注册是不需要登录回调的，因为用户刚创建，所以不会有任何数据跟该用户相关
 class Register extends Component {
 	
 	constructor (props) {
@@ -65,7 +65,7 @@ class Register extends Component {
 				return reject();
 			}
 			getRegCode({email}).then(res => {
-				message.success(res.resultMessage)
+				message.success('验证码已成功发送，请在半小时内填写！')
 				resolve();
 			}).catch(res => reject())
 		

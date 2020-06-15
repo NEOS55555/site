@@ -9,18 +9,21 @@ import Portrait from '@/components/AccountSetting/Portrait'
 // import cookie from 'react-cookies'
 import backgrond from '@/commonComp/Background'
 import Header from '@/commonComp/Header'
+import Footer from '@/commonComp/Footer'
 import RightComp from '@/commonComp/RightComp'
 import ComContent from '@/components/ComContent'
 import SiteDetail from '@/components/SiteDetail'
 import MessageMng from '@/components/MessageMng'
 import CatalogMng from '@/components/CatalogMng'
+import Feedback from '@/components/Feedback'
+import MyCollections from '@/components/MyCollections'
 
 const AccountNavRoute = [
 	{
 		path: '/account/portrait',
 		name: '头像修改',
 		exact: true,
-		// content: <Fragment><Portrait /><RightComp isAccount={true} /></Fragment>
+		content: <Fragment><Portrait /><RightComp isAccount={true} /></Fragment>
 	}
 ]
 
@@ -47,17 +50,33 @@ class Routers extends Component {
 		    		<Route exact path="/catalogmng">
 							<CatalogMng/>
 		        </Route>
-		        {
-		        	AccountNavRoute.map((it, index) => 
-								<Route key={index} exact={it.exact} path={it.path}>
-									<Portrait />
-									<RightComp isAccount={true} />
-				        </Route>
-		        	)
-		        }
-		        {/*<Route exact path="/account/portrait">
-							<Fragment><Portrait /><RightComp isAccount={true} /></Fragment>
+		    		{/*<Route exact path="/collect/:catalog/:search">
+		    			<MyCollections />
+							<RightComp isCollect />
 		        </Route>*/}
+		    		<Route exact path="/collect/:catalog">
+		    			<MyCollections />
+							<RightComp isCollect />
+		        </Route>
+		    		<Route exact path="/collect">
+		    			<MyCollections />
+							<RightComp isCollect />
+		        </Route>
+		    		<Route exact path="/feedback">
+							<Feedback/>
+							<RightComp />
+		        </Route>
+		        {
+		        	/*AccountNavRoute.map((it, index) => 
+								<Route key={index} exact={it.exact} path={it.path}>
+									{it.content}
+				        </Route>
+		        	)*/
+		        }
+		        <Route exact path="/account/portrait">
+							<Portrait />
+							<RightComp isAccount />
+		        </Route>
 		        <Route exact path="/tag/:tagName">
 							<ComContent />
 							<RightComp />
@@ -71,16 +90,16 @@ class Routers extends Component {
 							<RightComp />
 		        </Route>
 		        <Route exact path="/system/:catalog/:search">
-							<ComContent isSystem={true} />
-							<RightComp isSystem={true} />
+							<ComContent isSystem />
+							<RightComp isSystem />
 		        </Route>
 		        <Route exact path="/system/:catalog">
-							<ComContent isSystem={true} />
-							<RightComp isSystem={true} />
+							<ComContent isSystem />
+							<RightComp isSystem />
 		        </Route>
 		        <Route exact path="/system">
-							<ComContent isSystem={true} />
-							<RightComp isSystem={true} />
+							<ComContent isSystem />
+							<RightComp isSystem />
 		        </Route>
 		        <Route exact path="/:catalog/:search">
 							<ComContent />
@@ -102,6 +121,7 @@ class Routers extends Component {
 		        </Route>
 		      </Switch>
 				</div>
+				<Footer />
 	    </Router>
 	  );
 	}

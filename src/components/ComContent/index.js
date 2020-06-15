@@ -5,10 +5,12 @@ import Content from '../Content/Content'
 import { connect } from 'react-redux'
 // import './SystemComp.scss';
 // import { Button } from 'antd'
-import { getSiteList, updateSiteMngData } from '@/store/actions'
+import { LOG_OVERDUE_CODE } from '@/common/constant'
+import { getSiteList, updateSiteMngData, setUsername, updateSiteList, collectSite } from '@/store/actions'
 import { withRouter } from "react-router";
 
-import CurContext from './cur-context';
+import CurContext from '@/provider/cur-context';
+import eventBus from '@/common/eventBus'
 
 
 class ComContent extends Component {
@@ -51,13 +53,17 @@ class ComContent extends Component {
 	}
 	componentDidMount () {
 		const { isSystem, match: { params: { catalog } } } = this.props;
-		console.log('commonComp did mount ', isSystem)
+		// console.log('commonComp did mount ', isSystem)
     this.props.updateSiteMngData({
     	catalog: parseInt(catalog) || -1,
     	isSystem,
     	// search
     })
     this.getListAndSet({pageIndex: 1, isTotal: true})
+    // console.log(this.props)
+    eventBus.on('login#content', () => {
+    	this.handleOk();
+    })
 	}
 
 	handleOk = () => {
@@ -71,7 +77,7 @@ class ComContent extends Component {
 	}
 
 	getListAndSet = (params) => {
-		const { pageIndex: sPageIndex, pageSize: sPageSize } = this.props;
+		const { pageIndex: sPageIndex, pageSize: sPageSize, setUsername, history } = this.props;
 
 		const { pageIndex=sPageIndex, pageSize=sPageSize, isTotal } = params;
 		// console.log(catalog)
@@ -82,7 +88,12 @@ class ComContent extends Component {
 			// search,
 			isTotal,
 			...this.getsys()
-		})
+		}).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        setUsername('')
+        history.replace('/')
+      }
+    })
 	}
 	
 	onChange = pageIndex => {
@@ -91,8 +102,15 @@ class ComContent extends Component {
 	}
   onShowSizeChange = (pageIndex, pageSize) => this.getListAndSet({pageIndex, pageSize})
 
+  collectClick = _id => {
+		const { siteList } = this.props;
+		return collectSite({_id}).then(res => {
+      this.props.updateSiteList(siteList.map(it => it._id === _id ? {...it, isCollected: !it.isCollected} : it))
+    })
+  }
+
 	render () {
-		const { handleOk } = this;
+		const { handleOk, collectClick } = this;
 		// const { catalog } = this.state;
 		const { pageIndex, pageSize, siteList, siteTotal, isSystem } = this.props;
 
@@ -106,6 +124,7 @@ class ComContent extends Component {
 			  	<Content 
 			  		isSystem={isSystem}
 			  		list={siteList} 
+			  		collectClick={collectClick}
 			  		// handleOk={this.handleOk} 
 			  		total={siteTotal} current={pageIndex} pageSize={pageSize}
 				  	onChange={this.onChange} 
@@ -133,15 +152,20 @@ const mapDispatchToProps = dispatch => {
   	updateSiteMngData (data) {
   		return dispatch(updateSiteMngData(data))
   	},
+  	updateSiteList (list) {
+  		return dispatch(updateSiteList({list}))
+  	},
   	/*setCatalog (data) {
   		return dispatch(setCatalog(data))
   	},*/
   	getSiteList (params) {
 			return dispatch(getSiteList(params))
   	},
+  	setUsername (params) {
+			return dispatch(setUsername(params))
+  	},
   
   };
 };
 // export default ComContent;
-ComContent = connect(mapStateToProps, mapDispatchToProps)(ComContent);
-export default withRouter(ComContent);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ComContent));

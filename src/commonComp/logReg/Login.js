@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { message, Modal, Button, Input } from 'antd';
-import { trim, isLegal } from '@/common/common'
+import { trim, isLegal, pathType } from '@/common/common'
 import { pswTipText } from '@/common/constant'
 import { login, setUsername, updateComData, setReplyNum } from '@/store/actions'
 import { connect } from 'react-redux'
@@ -9,6 +9,7 @@ import imgUrl from '@/common/api'
 // import cookie from 'react-cookies'
 import { saveLoginCookie } from './loginCookie'
 import RestPsw from './RestPsw'
+import eventBus from '@/common/eventBus'
 
 // 登陆的时候粗略的校验一下就行了，没必要和注册一个逻辑
 class Login extends Component {
@@ -55,7 +56,7 @@ class Login extends Component {
 	// 登陆
 	handleOk = () => {
 		const { name, password, code } = this.state;
-		const { setUsername, updateComData, setReplyNum } = this.props;
+		const { setUsername, updateComData, setReplyNum, pathname } = this.props;
 		if (!trim(name)) {
 			this.setState({isNameError: true})
 			return;
@@ -85,6 +86,15 @@ class Login extends Component {
 				setUsername(user_name)
 				updateComData({is_async})
 				setReplyNum(check_reply_num)
+				
+				// 需要在不同的路由配置不同的回调
+				const pht = pathType(pathname)
+				if (pht === 'home') {
+					eventBus.emit('login#content')	// 获取列表内容
+				} else if (pht === 'sitedetail') {
+					eventBus.emit('login#siteDetail')	// 获取网页详情
+				}
+				
 			}, 30)
 		}).catch(res => {
 			this.refreshCode()
@@ -226,5 +236,4 @@ const mapDispatchToProps = dispatch => {
   	}
   };
 };
-Login = connect(null, mapDispatchToProps)(Login)
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);

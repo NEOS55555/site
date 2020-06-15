@@ -87,7 +87,17 @@
 		}
 	}
 }
-
+$activeHeart: orange;
+.anticon-heart.active {
+	color: $activeHeart;
+}
+/* .anticon-heart.acting {
+	animation: heartSpin 1s linear infinite;
+} */
+.anticon-heart.disabled {
+	color: rgba(158, 158, 158, 0.9);
+	cursor: not-allowed;
+}
 .site-item:hover {
 	transform: scale(1);
   box-shadow: 1px 1px 94px #afd4f3;
@@ -101,14 +111,14 @@
 	box-shadow: getMiddleShadow($shadowDarkColor);
 }
 
-/* @keyframes shadow {
-  from {
-  	box-shadow: 1px 1px 34px #000;
-  }
-  50% {
-  	box-shadow: 1px 1px 94px #afd4f3;
-  }
-  to{
-  	box-shadow: 1px 1px 34px #000;
-  }
-} */
+/*  @keyframes heartSpin {
+ from {
+ 	color: rgb(158, 158, 158);
+ }
+ 50% {
+ 	color: transparent;
+ }
+ to{
+ 	color: rgb(158, 158, 158);
+ }
+}  */

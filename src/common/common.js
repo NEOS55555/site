@@ -54,6 +54,15 @@ export const getBase64 = (file) => {
   });
 }
 
+export const pathType = (path='') => {
+	if (path.slice(0, 7) === '/system') {
+		return 'system'
+	} else if (path.slice(0, 11) === '/sitedetail') {
+		return 'sitedetail'
+	} else if (path == '/') {
+		return 'home'
+	}
+}
 // params: match
 export const isSystemPage = ({path=''}) => path.slice(0, 7) === '/system'
 
@@ -93,3 +102,24 @@ export const dateForNow = date => {
 		return '刚刚';
 	}
 }
+
+
+/*export const callback = () => {
+	const loginCallback = () => {};
+	const regCallback = () => {}
+	return {
+		setLoginCallback (cb) {
+			loginCallback = cb;
+		},
+		getLoginCallback () {
+			return loginCallback;
+		},
+		setRegCallback (cb) {
+			regCallback = cb;
+		},
+		getRegCallback () {
+			return regCallback;
+		},
+
+	}
+}*/

@@ -5,8 +5,8 @@ import {connect} from 'react-redux'
 import { message } from 'antd';
 // import cookie from 'react-cookies';
 // import url from '@/common/api'
-import { NORMAL_CODE } from '@/common/constant'
-import { delSite, updateSiteMngData, getSiteList } from '@/store/actions'
+import { NORMAL_CODE, LOG_OVERDUE_CODE } from '@/common/constant'
+import { delSite, updateSiteMngData, getSiteList, setUsername } from '@/store/actions'
 
 
 class CloseIcon extends Component {
@@ -45,6 +45,9 @@ class CloseIcon extends Component {
 	      	Dialog.close();
 		    }).catch(res => {
 		    	Dialog.hideLoading();
+		      if (res.resultCode === LOG_OVERDUE_CODE) {
+		        this.props.setUsername('')
+		      }
 		    })
 			}
 		});
@@ -81,6 +84,9 @@ const mapDispatchToProps = dispatch => {
   	},
   	getSiteList (params) {
 			return dispatch(getSiteList(params))
+  	},
+  	setUsername (params) {
+			return dispatch(setUsername(params))
   	},
   };
 };

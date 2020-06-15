@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import {message, Modal, Button, Input } from 'antd';
+import { LOG_OVERDUE_CODE } from '@/common/constant'
 // import './AddWebSite.scss';
-import { addCatalog, getCatalogList } from '@/store/actions'
+import { addCatalog, getAllCatalog, setUsername } from '@/store/actions'
 import { connect } from 'react-redux'
 
 
@@ -35,8 +36,12 @@ class AddCatalog extends Component {
 
 		addCatalog({name}).then(res => {
 			message.success('新增成功!')
-			this.props.getCatalogList()
-		}).finally(res => {
+			this.props.getAllCatalog()
+		}).catch(res => {
+      if (res.resultCode === LOG_OVERDUE_CODE) {
+        this.props.setUsername('')
+      }
+    }).finally(res => {
 			this.setState({ visible: false });
 		})
 		
@@ -98,9 +103,11 @@ class AddCatalog extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-  	
-  	getCatalogList (params) {
-			return dispatch(getCatalogList(params))
+  	setUsername (params) {
+			return dispatch(setUsername(params))
+  	},
+  	getAllCatalog (params) {
+			return dispatch(getAllCatalog(params))
   	},
   };
 };

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 // import { Input, Button } from 'antd';
 import { withRouter } from "react-router";
 import SiteItem from '@/commonComp/SiteItem'
-import { getSiteDetail, addView } from '@/store/actions'
+import { getSiteDetail, addView, setUsername, collectSite } from '@/store/actions'
+import { LOG_OVERDUE_CODE } from '@/common/constant'
 import './SiteDetail.scss'
 import CommentCtn from '@/commonComp/CommentCtn'
 import RecomdList from './RecomdList'
+import eventBus from '@/common/eventBus'
 
 // import BraftEditor from 'braft-editor'
 
@@ -15,6 +17,7 @@ class SiteDetail extends Component {
     // console.log(this.props)
     this.state = {
       siteData: {},
+      isCollected: false,
       // commitContent: BraftEditor.createEditorState(''),
     }
   }
@@ -29,6 +32,9 @@ class SiteDetail extends Component {
   }
   componentDidMount () {
     this.getSite$Add()
+    eventBus.on('login#siteDetail', () => {
+      this.getSite$Add();
+    })
   }
   getSite$Add = () => {
     const { siteId: t_id } = this.props.match.params
@@ -36,12 +42,29 @@ class SiteDetail extends Component {
     addView({_id: siteId})
     // const { params } = match
     // console.log(siteId, this.props)
-    getSiteDetail({site_id: siteId}).then(({result}) => this.setState({siteData: result}))
+    getSiteDetail({site_id: siteId})
+      .then(({result}) => this.setState({siteData: result, isCollected: result.isCollected}))
+      .catch(res => {
+        if (res.resultCode === LOG_OVERDUE_CODE) {
+          this.props.setUsername('')
+        }
+      })
   }
-
+  collectClick = (_id) => {
+    // const { data: { _id }, setUsername } = this.props
+    
+    // this.setState({ isCollecting: true })
+    const { isCollected } = this.state;
+    return collectSite({_id}).then(res => {
+      // console.log(res)
+      this.setState({
+        isCollected: !isCollected
+      })
+    })
+  }
 	render() {
     const { siteId } = this.props.match.params
-    const { siteData } = this.state;
+    const { siteData, isCollected } = this.state;
     return (
       <div className="site-detail main-content site-wrapper">
         <div className="site-container">
@@ -51,6 +74,8 @@ class SiteDetail extends Component {
               isSystem={false} 
               onlyShow={true}
               data={siteData} 
+              isCollected={isCollected}
+              collectClick={this.collectClick}
             />
           }
           <RecomdList siteId={siteId} catalog={(siteData.catalog || []).join(',')} />

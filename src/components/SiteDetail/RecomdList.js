@@ -32,7 +32,7 @@ class RecomdList extends Component {
     const { list } = this.state;
     return (
       <div className="recomd-wrapper">
-        <p className="title">相关推荐∵</p>
+        <div className="title">相关推荐∵</div>
         <ul>
           {
             list.map(it => 

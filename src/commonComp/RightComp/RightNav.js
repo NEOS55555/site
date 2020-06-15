@@ -34,7 +34,7 @@ class RightNav extends Component {
     }
   };*/
 	render () {
-		const { catalogList, match: { params: { catalog, search='' } }, isSystem } = this.props;
+		const { catalogListSite, match: { params: { catalog, search='' } }, isSystem } = this.props;
 		// console.log(match.params.catalog)
     // const isSystem = isSystemPage(match)
 		return (
@@ -49,9 +49,9 @@ class RightNav extends Component {
           style={{ width: 256 }}
         >
         	{
-        		catalogList.map(({_id, name}) => 
+        		catalogListSite.map(({_id, name, total}) => 
               <Menu.Item key={_id}>
-                <Link to={(isSystem ? '/system' : '') + '/' + _id + '/' + search} >{name}</Link>
+                <Link to={(isSystem ? '/system' : '') + '/' + _id + '/' + search} >{name} { total && !isSystem ? `(${total})` : ''}</Link>
               </Menu.Item>
             )
         	}
@@ -62,9 +62,10 @@ class RightNav extends Component {
 	}
 }
 const mapStateToProps = state => {
-	const {catalogList} = state.siteMng
+	const { catalogListSite } = state.siteMng
+  // const total = catalogListSite.reduce((a, p) => a + p.total, 0)
   return {
-  	catalogList: [{_id: 0, name: '全部'} ,...catalogList],
+  	catalogListSite: [{_id: 0, name: '全部'} ,...catalogListSite],
   };
 };
 

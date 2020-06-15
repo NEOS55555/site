@@ -1,5 +1,8 @@
 import { getStrChartLen } from './common'
 
+// 反馈评论-相对于网站的id
+export const FEEDBACK_SITEID = 0;
+export const LOG_OVERDUE_CODE = 233;
 // 发送邮件倒计时
 export const COUNT_DOWN = 60;
 // 状态码

@@ -4,6 +4,8 @@ import StatusNav from './StatusNav'
 import Top10Site from './Top10Site'
 import NewestCommit from './NewestCommit'
 import AccountNav from './AccountNav'
+import CollectRightNav from './CollectRightNav'
+// import {connect} from 'react-redux'
 // import { Input } from 'antd';
 // import { withRouter } from "react-router";
 // import { connect } from 'react-redux'
@@ -25,7 +27,7 @@ class RightComp extends Component {
   }*/
 
   render () {
-		const { isSystem, isAccount/*, match: { params: { search='' } }*/ } = this.props
+		const { isSystem, isAccount, isCollect/*, match: { params: { search='' } }*/ } = this.props
   	// const { visible, confirmLoading } = this.state;
   	// console.log(current)
   	return (
@@ -39,8 +41,11 @@ class RightComp extends Component {
               {
                 isSystem ? <StatusNav /> : <Top10Site />
               }
-              <RightNav isSystem={isSystem} />
-              <NewestCommit />
+              {
+                isCollect ? <CollectRightNav /> : <RightNav isSystem={isSystem} />
+              }
+              
+              {/*<NewestCommit />*/}
             </Fragment>
           )
 
@@ -49,6 +54,13 @@ class RightComp extends Component {
 	  )
   }
 }
+/*const mapStateToProps = state => {
+  const { catalogListSite } = state.siteMng
+  // const total = catalogListSite.reduce((a, p) => a + p.total, 0)
+  return {
+    catalogListSite: [{_id: 0, name: '全部'} ,...catalogListSite],
+  };
+};*/
 
 /*const mapStateToProps = state => {
   const { search } = state.siteMng
