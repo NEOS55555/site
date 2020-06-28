@@ -83,7 +83,7 @@ class Register extends Component {
 	// 上架
 	handleOk = () => {
 		const { name, password, email, code, nameError } = this.state;
-		console.log(password)
+		// console.log(password)
 		if (nameError !== -1) {
 			return;
 		}
@@ -120,11 +120,13 @@ class Register extends Component {
 			message.success(resultMessage)
 			this.setState({
 				visible: false,
+				confirmLoading: false,
 			})
-
-			this.props.setUsername(name)
-			this.props.updateComData({is_async})
-		}).finally(res => this.setState({ confirmLoading: false }))
+			setTimeout(() => {
+				this.props.setUsername(name)
+				this.props.updateComData({is_async})
+			}, 30)
+		}).catch(res => this.setState({ confirmLoading: false }))
 	};
 	
 

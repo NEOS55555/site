@@ -4,11 +4,11 @@ import {message, Modal, Button, Input, Select, Popover } from 'antd';
 // import './AddWebSite.scss';
 import { addSite, editSite, /*getCatalogList*/ } from '@/store/actions'
 import {
-	isLegal,
+	isLegalExps,
 	getBase64,
 	getStrChartLen,
 	checkUrl,
-	// trim
+	trim
 } from '@/common/common'
 
 import {
@@ -108,11 +108,11 @@ class AddWebSite extends Component {
 	handleSite = (status) => {
 		this.setState({confirmLoading: true})
 		const { isEdit } = this.props
-		const { name, url, desc, imgfiles, catalog, handleOk, handleError, _id, img, tags } = this.state;
+		const { name, url, desc, imgfiles, catalog, handleOk, /*handleError,*/ _id, img, tags } = this.state;
 		// console.log(tags)
 		
 		let formData = new FormData();
-		formData.append('name', name);
+		formData.append('name', trim(name));
 		formData.append('url', url);
 		formData.append('desc', desc.toHTML());
 		formData.append('status', status);
@@ -139,12 +139,13 @@ class AddWebSite extends Component {
 		// window.abc = formData;
 		;(isEdit ? editSite : addSite)(formData).then(data => {
 			// return;
+			this.setState({confirmLoading: false})
 			handleOk && handleOk();
 			this.handleOver();
 			message.success(data.resultMessage)
-		}).catch(res => {
+		})/*.catch(res => {
 			handleError && handleError(res);
-		}).finally(data => {
+		})*/.catch(data => {
 			this.setState({confirmLoading: false})
 		})
 	}
@@ -185,7 +186,7 @@ class AddWebSite extends Component {
 		let flag = -1
 		if (nameStrlen > MAX_SIT_NAME) {
 			flag = 0
-		} else if (!isLegal(name)) {
+		} else if (!isLegalExps(name)) {
 			flag = 1
 		} else if (name.length === 0) {
 			flag = 2

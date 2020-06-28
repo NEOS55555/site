@@ -75,10 +75,11 @@ class RestPsw extends Component {
 		const { name, password, code } = this.state;
 		this.setState({confirmLoading: true})
 		resetPassword({name, password, code: code.toString()}).then(data => {
+			this.setState({confirmLoading: false})
 			const { resultMessage } = data;
 			message.success(resultMessage)
 			this.handleOver()
-		}).finally(res => this.setState({confirmLoading: false}))
+		}).catch(res => this.setState({confirmLoading: false}))
 	};
 	
 

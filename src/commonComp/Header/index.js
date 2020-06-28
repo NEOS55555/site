@@ -4,17 +4,18 @@ import { connect } from 'react-redux'
 import Register from '@/commonComp/logReg/Register'
 import Login from '@/commonComp/logReg/Login'
 import { addWebSite } from '@/components/AddWebSite/AddWebSite'
-// import imgUrl from '@/common/api'
+import { isLogOverdue } from '@/common/common'
 // import cookie from 'react-cookies'
 import { withRouter } from "react-router";
-import { setUsername, updateSiteMngData, getSiteList, getAllCatalog, getTop10SiteList, updateComData, dispatchCatalogList } from '@/store/actions'
+import { setUsername, updateSiteMngData, getSiteList, getAllCatalog, getTop10SiteList, dispatchCatalogList } from '@/store/actions'
 import { Link } from "react-router-dom";
 import { Dropdown, Menu, Input, Button } from 'antd'
 import { removeLoginCookie } from '@/commonComp/logReg/loginCookie'
 import './Header.scss'
 import { AccountNavRoute } from '@/common/Routers'
-import { LOG_OVERDUE_CODE } from '@/common/constant'
+// import { LOG_OVERDUE_CODE } from '@/common/constant'
 import logo from '@/assets/images/logo.png'
+import eventBus from '@/common/eventBus'
 // import CurContext from '@/components/ComContent/cur-context'
 
 
@@ -24,37 +25,54 @@ class Header extends Component {
     this.props.getAllCatalog()
     this.props.getTop10SiteList()
     this.props.dispatchCatalogList()
-    console.log('header did mount')
-    console.log(this.props)
+    eventBus.on('logout#clear', res => {
+      // console.log(res)
+      if (isLogOverdue(res)) {
+        this.clear()
+      }
+    })
+    eventBus.on('logout#toHome', (res) => {
+      if (isLogOverdue(res)) {
+        this.toHome();
+      }
+    })
+
+    // console.log('header did mount')
+    // console.log(this.props)
   }
   
-  logout = () => {
-    const { setUsername, history } = this.props;
+  clear = () => {
     removeLoginCookie();
-    setUsername('')
-    history.replace('/')
+    this.props.setUsername('')
+  }
+
+  toHome = () => this.props.history.replace('/')
+
+  logout = () => {
+    this.clear();
+    this.toHome();
   }
   addNewSite = () => {
     // const { catalog } = this.state;
     // const catalog = parseInt(this.props.match.params.catalog) || -1
-    const { getSiteList, catalogList, pageIndex, pageSize, status, catalog, setUsername } = this.props
+    const { getSiteList, catalogList, pageIndex, pageSize, status, catalog } = this.props
     addWebSite.open({
       catalogList,
       handleOk () {
         getSiteList({ catalog, status, pageIndex, pageSize, isTotal: true, is_edit: true });
-      },
+      }/*,
       handleError (res) {
-        if (res.resultCode === LOG_OVERDUE_CODE) {
+        if (isLogOverdue(res)) {
           setUsername('')
         }
-      }
+      }*/
     });
   }
   
   
   // 搜索框
   onSearch = value => {
-    const { location, history, isSystem, catalog } = this.props;
+    const { history, isSystem, catalog } = this.props;
   
     history.push((isSystem ? '/system' : '') + '/' + (catalog === -1 ? 0 : catalog) +'/'+value)
     /*const { updateSiteMngData } = this.props
@@ -85,7 +103,7 @@ class Header extends Component {
     const menu = (
       <Menu className="user-setting-list">
         <Menu.Item><Link onClick={this.routerClick} to="/collect">我的收藏</Link></Menu.Item>
-        <Menu.Item><Link onClick={this.routerClick} to="/replyme">回复我的({check_reply_num})</Link></Menu.Item>
+        <Menu.Item><Link onClick={this.routerClick} to="/replyme">回复我的{ check_reply_num === 0 ? '' : `(${check_reply_num})`}</Link></Menu.Item>
         <Menu.Item><Link onClick={this.routerClick} to={AccountNavRoute[0].path} >账号管理</Link></Menu.Item>
         <Menu.Item><Link to="/system/0">页面管理</Link></Menu.Item>
         <Menu.Item><span className="link-a" onClick={this.logout}>退出</span></Menu.Item>
@@ -100,7 +118,15 @@ class Header extends Component {
             <ul className="top-nav-list">
               <li><Link onClick={this.routerClick} to="/">首页</Link></li>
               <li><Link onClick={this.routerClick} to="/feedback">用户体验</Link></li>
-              {is_async && <li><Link onClick={this.routerClick}  to="/catalogmng" >分类管理</Link></li>}
+              <li><Link onClick={this.routerClick} to="/standard">收录标准</Link></li>
+              {
+                is_async && 
+                <Fragment>
+                  <li><Link onClick={this.routerClick}  to="/catalogmng" >分类管理</Link></li>
+                  <li><Link onClick={this.routerClick}  to="/noticemng" >公告管理</Link></li>
+                  <li><Link onClick={this.routerClick}  to="/system/0" >页面管理</Link></li>
+                </Fragment>
+              }
             </ul>
           </div>
           <div className="user-ctn">
@@ -114,7 +140,7 @@ class Header extends Component {
                   }
 
                   <Dropdown overlay={menu} placement="bottomRight" >
-                    <Button type="link" className="user-btn">{user_name}({check_reply_num})</Button>
+                    <Button type="link" className="user-btn">{user_name}{ check_reply_num === 0 ? '' : `(${check_reply_num})`}</Button>
                   </Dropdown>
                 </Fragment>) 
               : (<Fragment><Login pathname={pathname} /><Register /></Fragment>)

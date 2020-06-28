@@ -66,9 +66,9 @@ export const siteErrorText = {
 }
 
 // 尺寸不小于200 x 200，
-export const siteImgTip = `点击图片进行添加，大小不超过1M`
+const MAX_IMG_M = 2;
 const M = 1024 * 1024
-const MAX_IMG_M = 1;
+export const siteImgTip = `点击图片进行添加，大小不超过${MAX_IMG_M}M`
 export const MAX_IMG_SIZE = M * MAX_IMG_M;
 export const siteImgErrorText = {
 	0: `图片格式不对`,
@@ -90,4 +90,4 @@ export const siteImgErrorText = {
 export const descControls = ['text-color', 'bold', 'italic', 'underline', 'emoji']
 
 export const MAX_COMMIT_LEN = 400;
-export const faceImgTip = `大小不超过1M`
+export const faceImgTip = `大小不超过${MAX_IMG_M}M`

@@ -6,7 +6,7 @@ const initState = {
   catalogList: [],
   catalogListSite: [],
   pageIndex: 1,
-  pageSize: 5,
+  pageSize: 10,
   search: '',
   catalog: -1,
   status: -1,  // 系统管理-如果后面有状态切换的话， 就会需要到

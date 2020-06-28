@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { getReplyMeList, clearreplynum, setReplyNum, setUsername } from '@/store/actions'
-import { withRouter } from "react-router";
+import { getReplyMeList, clearreplynum, setReplyNum } from '@/store/actions'
+// import { withRouter } from "react-router";
 import { Pagination } from 'antd'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
-import { FEEDBACK_SITEID, LOG_OVERDUE_CODE } from '@/common/constant'
+import { FEEDBACK_SITEID } from '@/common/constant'
 import './MessageMng.scss'
+import eventBus from '@/common/eventBus'
 
 
 class MessageMng extends Component {
@@ -23,7 +24,6 @@ class MessageMng extends Component {
     clearreplynum().then(res => this.props.setReplyNum(0))
   }
   getReplyMeList = (params) => {
-    const { setUsername, history } = this.props;
 
     getReplyMeList(params).then(res => {
       const { list, total } = res.result
@@ -36,10 +36,7 @@ class MessageMng extends Component {
         })
       }
     }).catch(res => {
-      if (res.resultCode === LOG_OVERDUE_CODE) {
-        setUsername('')
-        history.replace('/')
-      }
+      eventBus.emit('logout#toHome', res)
     })
   }
   onChange = (pageIndex) => {
@@ -97,11 +94,8 @@ const mapDispatchToProps = dispatch => {
     setReplyNum (num) {
       return dispatch(setReplyNum(num))
     },
-    setUsername (name) {
-      return dispatch(setUsername(name))
-    },
   };
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(MessageMng));
+export default connect(null, mapDispatchToProps)(MessageMng);
 

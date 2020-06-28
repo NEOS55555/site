@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 // import { Input, Button } from 'antd';
 import { withRouter } from "react-router";
 import SiteItem from '@/commonComp/SiteItem'
-import { getSiteDetail, addView, setUsername, collectSite } from '@/store/actions'
-import { LOG_OVERDUE_CODE } from '@/common/constant'
+import { getSiteDetail, addView, collectSite } from '@/store/actions'
+// import { LOG_OVERDUE_CODE } from '@/common/constant'
 import './SiteDetail.scss'
 import CommentCtn from '@/commonComp/CommentCtn'
 import RecomdList from './RecomdList'
@@ -43,12 +43,12 @@ class SiteDetail extends Component {
     // const { params } = match
     // console.log(siteId, this.props)
     getSiteDetail({site_id: siteId})
-      .then(({result}) => this.setState({siteData: result, isCollected: result.isCollected}))
-      .catch(res => {
+      .then(({result={}}) => this.setState({siteData: result, isCollected: result.isCollected}))
+      /*.catch(res => {
         if (res.resultCode === LOG_OVERDUE_CODE) {
           this.props.setUsername('')
         }
-      })
+      })*/
   }
   collectClick = (_id) => {
     // const { data: { _id }, setUsername } = this.props
@@ -69,14 +69,15 @@ class SiteDetail extends Component {
       <div className="site-detail main-content site-wrapper">
         <div className="site-container">
           {
-            !!siteData._id && 
-            <SiteItem 
-              isSystem={false} 
-              onlyShow={true}
-              data={siteData} 
-              isCollected={isCollected}
-              collectClick={this.collectClick}
-            />
+            !!siteData._id 
+             ? <SiteItem 
+                isSystem={false} 
+                onlyShow={true}
+                data={siteData} 
+                isCollected={isCollected}
+                collectClick={this.collectClick}
+              />
+              : <p>非常抱歉，该网站已下架！</p>
           }
           <RecomdList siteId={siteId} catalog={(siteData.catalog || []).join(',')} />
           <h3 className="title" style={{marginTop: 15}} >评论</h3>

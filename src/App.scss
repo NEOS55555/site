@@ -1,5 +1,8 @@
 body {
     color: $fontColor;
+    p {
+        margin: 0;
+    }
 }
 .main-content-wrapper {
     display: flex;
@@ -110,6 +113,7 @@ body {
 .ant-menu-item:active, .ant-menu-submenu-title:active {
     background: $listActiveBgColor;
 }
+.ant-checkbox-wrapper,
 .ant-menu-item > a {
     color: $fontColor;
 }

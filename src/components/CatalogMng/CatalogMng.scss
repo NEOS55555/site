@@ -1,4 +1,7 @@
 .catalog-wrapper {
+	.ant-list {
+		margin-top: 20px;
+	}
 	.ant-list-items {
 		.ant-list-item {
 			display: inline-block;
@@ -14,6 +17,14 @@
 				margin-left: 5px;
 				cursor: pointer;
 			}
+		}
+	}
+}
+
+.sortable-list {
+	ul {
+		li {
+			padding: 5px;
 		}
 	}
 }

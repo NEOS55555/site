@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+// import {connect} from 'react-redux'
 // import 'cropperjs/dist/cropper.css';
 import { message, Button, Popover } from 'antd';
 import './Portrait.scss'
 import Cropper from './react-cropper';
-import { saveportrait, getUserportrait, setUsername } from '@/store/actions'
-import { withRouter } from "react-router";
+import { saveportrait, getUserportrait } from '@/store/actions'
+// import { withRouter } from "react-router";
 
 import loading from '@/commonComp/Loading'
 import defaultFace from '@/assets/images/face.png'
 
+import eventBus from '@/common/eventBus'
 import imgurl from '@/common/api'
 /* global FileReader */
 import {
@@ -17,7 +18,7 @@ import {
   faceImgTip,
   MAX_IMG_SIZE,
   siteImgErrorText,
-  LOG_OVERDUE_CODE
+  // LOG_OVERDUE_CODE
 } from '@/common/constant'
 
 
@@ -35,7 +36,7 @@ class Portrait extends Component {
     this.onChange = this.onChange.bind(this);
   }
   componentDidMount () {
-    const { setUsername, history } = this.props;
+    // const { history } = this.props;
     loading.transShow()
     getUserportrait().then(res => {
       const { result } = res;
@@ -43,10 +44,7 @@ class Portrait extends Component {
         orgSrc: result ? imgurl + result : defaultFace
       })
     }).catch(res => {
-      if (res.resultCode === LOG_OVERDUE_CODE) {
-        setUsername('')
-        history.replace('/')
-      }
+      eventBus.emit('logout#toHome', res)
     })
   }
   checkImg (file) {
@@ -98,11 +96,7 @@ class Portrait extends Component {
     const imgData = cropped.toDataURL()
     saveportrait({imgData})
       .then(res => message.success(res.resultMessage))
-      .catch(res => {
-        if (res.resultCode === LOG_OVERDUE_CODE) {
-          this.props.setUsername('')
-        }
-      })
+      
     /*this.setState({
       cropResult: cropped.toDataURL(),
     });*/
@@ -175,12 +169,12 @@ class Portrait extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+/*const mapDispatchToProps = dispatch => {
   return {
     setUsername (params) {
       return dispatch(setUsername(params))
     },
   };
-};
-// export default ComContent;
-export default withRouter(connect(null, mapDispatchToProps)(Portrait));
+};*/
+export default Portrait;
+// export default withRouter(connect(null, mapDispatchToProps)(Portrait));

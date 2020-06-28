@@ -15,8 +15,10 @@ import ComContent from '@/components/ComContent'
 import SiteDetail from '@/components/SiteDetail'
 import MessageMng from '@/components/MessageMng'
 import CatalogMng from '@/components/CatalogMng'
+import NoticeMng from '@/components/NoticeMng'
 import Feedback from '@/components/Feedback'
 import MyCollections from '@/components/MyCollections'
+import Standard from '@/components/Standard'
 
 const AccountNavRoute = [
 	{
@@ -47,8 +49,15 @@ class Routers extends Component {
 				<Header />
 				<div className="container main-content-wrapper">
 		    	<Switch>
+		    		<Route exact path="/standard">
+							<Standard/>
+							<RightComp />
+		        </Route>
 		    		<Route exact path="/catalogmng">
 							<CatalogMng/>
+		        </Route>
+		    		<Route exact path="/noticemng">
+							<NoticeMng/>
 		        </Route>
 		    		{/*<Route exact path="/collect/:catalog/:search">
 		    			<MyCollections />

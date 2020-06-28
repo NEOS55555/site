@@ -4,7 +4,8 @@ import cookie from 'react-cookies';
 import { message } from 'antd';
 import loading from '@/commonComp/Loading'
 import { LOG_OVERDUE_CODE } from '@/common/constant'
-import { removeLoginCookie } from '@/commonComp/logReg/loginCookie'
+// import { removeLoginCookie } from '@/commonComp/logReg/loginCookie'
+import eventBus from '@/common/eventBus'
 
 export const UPDATE_DATA = 'UPDATE_DATA';    // 这个只是修改siteMng里的数据 ，别他妈搞忘了
 export const UPDATE_COM_DATA = 'UPDATE_COM_DATA';    // 这个修改公共的数据
@@ -36,7 +37,8 @@ axios.interceptors.response.use(function (response) {
   if (resultCode && (resultCode !== 200)) {
     message.error(data.resultMessage)
     if (resultCode === LOG_OVERDUE_CODE) {
-      removeLoginCookie()
+      // removeLoginCookie()
+      eventBus.emit('logout#clear', data)
     }
     loading.close()
     return Promise.reject(data);
@@ -112,6 +114,7 @@ export function setReplyNum (data=0) {
 }
 // 修改分类名
 export const editCatalog = params => axios.post(url + '/editCatalog', params, {headers: getAuthorization()})
+export const editNotice = params => axios.post(url + '/editNotice', params, {headers: getAuthorization()})
 export const delCatalog = params => axios.get(url + '/delCatalog', {params, headers: getAuthorization()})
 // 收藏网址
 export const collectSite = params => axios.get(url + '/collectSite', {params, headers: getAuthorization()})
@@ -175,10 +178,6 @@ export const getAllCatalog = params => dispatch => axios.get(url + '/getAllCatal
 })
 
 const getCatalogList = params => axios.get(url + '/getCatalogList', {params})
-export {
-  getCatalogList,
-  updateSiteList
-}
 
 // 获取网站分类-包含该分类的网站总数
 export const dispatchCatalogList = params => dispatch => getCatalogList(params).then(res => {
@@ -192,6 +191,8 @@ export const delSite = params => axios.post(url + '/delSite', params, {headers: 
 // 新增分类
 // _id, status
 export const addCatalog = params => axios.post(url + '/addCatalog', params, {headers: getAuthorization()})
+// 新增公告
+export const addNotice = params => axios.post(url + '/addNotice', params, {headers: getAuthorization()})
 // 保存头像
 export const saveportrait = params => axios.post(url + '/saveportrait', params, {headers: getAuthorization()})
 
@@ -216,8 +217,19 @@ export const editSite = (params) => {
 }
 
 export const checkNameExist = params => axios.get(url + '/checkName', {params})
+// 获取公告列表
+export const getNoticeList = params => axios.get(url + '/getNoticeList', {params})
+// 删除公告
+export const delNotice = params => axios.get(url + '/delNotice', {params, headers: getAuthorization()})
 // 用户信息
 export const getUserportrait = params => axios.post(url + '/getUserportrait', params, {headers: getAuthorization()})
+// 更新分类排序
+export const updateCatalogSort = params => axios.post(url + '/updateCatalogSort', params, {headers: getAuthorization()})
 
 // 收藏
 export const getCollectList = params => axios.get(url + '/getCollectList', {params, headers: getAuthorization()})
+
+export {
+  getCatalogList,
+  updateSiteList,
+}

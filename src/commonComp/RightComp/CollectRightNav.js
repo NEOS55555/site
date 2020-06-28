@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
+// import {connect} from 'react-redux'
 import { Menu } from 'antd';
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
@@ -16,7 +16,7 @@ class CollectRightNav extends Component {
 		}
 	}
 	componentDidMount () {
-    console.log('abcdefg')
+    // console.log('abcdefg')
     getCatalogList({type: 'collect'}).then(res => {
       const { list } = res.result
       this.setState({ list: [{_id: 0, name: '全部'}, ...list] })

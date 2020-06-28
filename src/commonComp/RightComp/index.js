@@ -5,6 +5,7 @@ import Top10Site from './Top10Site'
 import NewestCommit from './NewestCommit'
 import AccountNav from './AccountNav'
 import CollectRightNav from './CollectRightNav'
+import Notice from './Notice'
 // import {connect} from 'react-redux'
 // import { Input } from 'antd';
 // import { withRouter } from "react-router";
@@ -15,10 +16,10 @@ import CollectRightNav from './CollectRightNav'
 import './RightComp.scss';
 
 class RightComp extends Component {
-  componentDidMount () {
-    console.log(this.props)
+  /*componentDidMount () {
+    // console.log(this.props)
     console.log('RightComp did mount')
-  }
+  }*/
   // 搜索框
   /*onSearch = value => {
     const { location, history, isSystem, match: { params: { catalog=0 } } } = this.props;
@@ -32,6 +33,7 @@ class RightComp extends Component {
   	// console.log(current)
   	return (
 			<div className="right-content">
+        <Notice />
         {
           isAccount 
           ? <AccountNav />
@@ -45,7 +47,7 @@ class RightComp extends Component {
                 isCollect ? <CollectRightNav /> : <RightNav isSystem={isSystem} />
               }
               
-              {/*<NewestCommit />*/}
+              <NewestCommit />
             </Fragment>
           )
 

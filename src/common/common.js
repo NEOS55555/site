@@ -1,5 +1,5 @@
 import React from 'react';
-import { statusMap, pswTipText } from './constant';
+import { statusMap, pswTipText, LOG_OVERDUE_CODE } from './constant';
 
 /*export const replaceStrTob = (str='', key='') => {
 	if (!str || !key) {
@@ -7,6 +7,8 @@ import { statusMap, pswTipText } from './constant';
 	}
 	return str.replace(new RegExp(key, 'igm'), `<b>${key}</b>`)
 }*/
+
+export const isLogOverdue = res => res.resultCode === LOG_OVERDUE_CODE;
 
 export const getStatus = statusCode => {
 	return statusCode !== 1 && <b style={{color: statusCode === 0 ? 'red' : 'orange'}}>({statusMap[statusCode]})</b>
@@ -26,7 +28,17 @@ export const isLegal = (str='') => {
 	const reg = /[\s\@\#\$\%\^\&\*\{\}\:\.\"\'\<\>\?\|]/ig
 	return !reg.test(str)
 }
-
+// 不包含空格
+export const isLegalExps = (str='') => {
+	if (typeof str === 'number') {
+		return !isNaN(str);
+	}
+	/*if (str === '' || str === null) {
+		return false;
+	}*/
+	const reg = /[\@\#\$\%\^\&\*\{\}\:\.\"\'\<\>\?\|]/ig
+	return !reg.test(str)
+}
 export const checkMail = (mail='') => {
 	if (mail === '' || mail === null) {
 		return false;

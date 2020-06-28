@@ -34,7 +34,7 @@ class RightNav extends Component {
     }
   };*/
 	render () {
-		const { catalogListSite, match: { params: { catalog, search='' } }, isSystem } = this.props;
+		const { catalogListSite, match: { params: { catalog/*, search=''*/ } }, isSystem } = this.props;
 		// console.log(match.params.catalog)
     // const isSystem = isSystemPage(match)
 		return (
@@ -51,7 +51,7 @@ class RightNav extends Component {
         	{
         		catalogListSite.map(({_id, name, total}) => 
               <Menu.Item key={_id}>
-                <Link to={(isSystem ? '/system' : '') + '/' + _id + '/' + search} >{name} { total && !isSystem ? `(${total})` : ''}</Link>
+                <Link to={(isSystem ? '/system' : '') + '/' + _id /*+ '/' + search*/} >{name} { total && !isSystem ? `(${total})` : ''}</Link>
               </Menu.Item>
             )
         	}

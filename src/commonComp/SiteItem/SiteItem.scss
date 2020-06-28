@@ -17,7 +17,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+    a {
+    	color: orange;
+    }
     /* span {
     	cursor: pointer;
     } */
@@ -51,7 +53,7 @@
 				align-items: center;
 				justify-content: center;
 				img {
-					max-width: 80%;
+					max-width: 40%;
 				}
 
 			}

@@ -78,7 +78,7 @@ $asteroids-belt-orb : 300px; $asteroids-belt-pl: 210px;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 999;
+  /*z-index: 999;*/
   /*background: url(./bg.gif);*/
 
   .star {

@@ -2,11 +2,11 @@ import React, { Component, Fragment} from 'react';
 import './SiteItem.scss'
 import { EditOutlined, HeartFilled } from '@ant-design/icons'
 import { getStatus, getCeil5 } from '@/common/common'
-import { NORMAL_CODE, LOG_OVERDUE_CODE } from '@/common/constant'
+import { NORMAL_CODE } from '@/common/constant'
 // import Dialog from '@/commonComp/Dialog'
 import imgurl from '@/common/api'
 // import cookie from 'react-cookies'
-import { setRate, addView, setUsername, collectSite } from '@/store/actions'
+import { setRate, addView } from '@/store/actions'
 import { Rate, Spin, Tooltip } from 'antd';
 import {editWebSite} from '@/components/AddWebSite/AddWebSite'
 import CurContext from '@/provider/cur-context'
@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 
 import DelIcon from './Icons/DelIcon'
 import { Link } from "react-router-dom";
+// import eventBus from '@/common/eventBus'
 
 
 class SiteItem extends Component {
@@ -56,11 +57,10 @@ class SiteItem extends Component {
 			// user_ip: cookie.load('userIp'),
 			value
 		}).then(res => {
-			
+			this.setState({ isRating: false })
 			this.setState((prevState) => {
 				const { value: tval, length } = prevState.rate;
 				return {
-					isRating: false,
 					rate: {
 						isRated: true,
 						value: tval + value, 
@@ -68,7 +68,7 @@ class SiteItem extends Component {
 					}
 				}
 			})
-		})
+		}).catch(res => this.setState({ isRating: false }))
 		
 	}
 	// 跳转页面并计算点击量
@@ -84,7 +84,7 @@ class SiteItem extends Component {
 	// 编辑弹窗
 	editClick = () => {
 		const ctx = this.context;
-		const { data, catalogList, setUsername } = this.props;
+		const { data, catalogList } = this.props;
 		editWebSite.open({
 	    catalogList,
 			...data,
@@ -95,11 +95,9 @@ class SiteItem extends Component {
 			isCatalogFirst: false,
 			isTagFirst: false,
 			handleOk: ctx.handleOk,
-			handleError (res) {
-        if (res.resultCode === LOG_OVERDUE_CODE) {
-          setUsername('')
-        }
-      }
+			/*handleError (res) {
+        eventBus.emit('logout#clear', res)
+      }*/
 		})
 	}
 	/*collectClick = () => {
@@ -121,12 +119,14 @@ class SiteItem extends Component {
 	emitCollectClick = () => {
 		const { data: { _id }, collectClick } = this.props
 		this.setState({isCollecting: true})
-		collectClick && collectClick(_id).finally(res => this.setState({isCollecting: false}))
+		collectClick && collectClick(_id)
+			// .catch(res => eventBus.emit('logout#clear', res))
+			.finally(res => this.setState({isCollecting: false}))
 	}
 	render () {
 		// const ctx = this.context;
 		// console.log(ctx);
-		const { data, isSystem, catalogList, catalogMap, is_async, onlyShow, isCollected } = this.props;
+		const { data, isSystem, catalogMap, is_async, onlyShow, isCollected } = this.props;
 		// console.log('is_async', is_async)
 		const { isRating, rate, isCollecting } = this.state;
 		// console.log(isCollected)
@@ -171,7 +171,7 @@ class SiteItem extends Component {
 						<div className="rich-content-text" dangerouslySetInnerHTML={{__html: desc}} ></div>
 						<div className="rich-content-cover">
 							<div className="rich-content-cover-inner">
-								{img && <img src={imgurl + img} alt=""/>}
+								{img && <img src={imgurl + img} alt="网页展示图"/>}
 							</div>
 						</div>
 						<div className="rich-footer">
@@ -225,12 +225,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+/*const mapDispatchToProps = dispatch => {
   return {
   	setUsername (name) {
 			return dispatch(setUsername(name))
   	},
   };
-};
+};*/
 
-export default connect(mapStateToProps, mapDispatchToProps)(SiteItem);
+export default connect(mapStateToProps, null)(SiteItem);

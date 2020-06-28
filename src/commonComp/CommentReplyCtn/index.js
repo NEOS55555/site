@@ -3,7 +3,7 @@ import { Button, Pagination } from 'antd';
 import './CommentReplyCtn.scss'
 import CommentItem from '../CommentItem'
 import { replyCommit, getReplyCommit, setUsername } from '@/store/actions'
-import { MAX_COMMIT_LEN, LOG_OVERDUE_CODE } from '@/common/constant'
+import { MAX_COMMIT_LEN } from '@/common/constant'
 import { connect } from 'react-redux'
 
 // 把UPDATE_DATA 修改一下 改成函数，不要到处写
@@ -82,13 +82,10 @@ class CommentReplyCtn extends Component {
       this.setState({
         commitContent: ContentUtils.clear(this.state.commitContent),
         replyList: [...replyList, res.result],
-        replyTotal: replyTotal + 1
+        replyTotal: replyTotal + 1,
+        confirmLoading: false
       })
-    }).catch(res => {
-      if (res.resultCode === LOG_OVERDUE_CODE) {
-        this.props.setUsername('')
-      }
-    }).finally(res => this.setState({ confirmLoading: false }))
+    }).catch(res => this.setState({ confirmLoading: false }))
   }
   collspaeClick = () => {
     const { isCheckReply, to_user_name } = this.state;

@@ -22,7 +22,7 @@ class MyCollections extends Component {
 	}
 	
 	componentDidUpdate (prevProps) {
-		const { isSystem } = this.props;
+		// const { isSystem } = this.props;
 		const { params: prevParams } = prevProps.match
 		const { params: curParams } = this.props.match
 		// console.log(prevParams, curParams)

@@ -38,7 +38,7 @@ class Loading extends Component {
 			this.setState({
 				show: false,
 			})
-		}, getRandSeconds(5, 8))
+		}, getRandSeconds(2, 3))
 	}
 
 	show () {

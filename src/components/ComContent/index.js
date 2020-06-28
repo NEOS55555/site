@@ -5,8 +5,8 @@ import Content from '../Content/Content'
 import { connect } from 'react-redux'
 // import './SystemComp.scss';
 // import { Button } from 'antd'
-import { LOG_OVERDUE_CODE } from '@/common/constant'
-import { getSiteList, updateSiteMngData, setUsername, updateSiteList, collectSite } from '@/store/actions'
+// import { LOG_OVERDUE_CODE } from '@/common/constant'
+import { getSiteList, updateSiteMngData, updateSiteList, collectSite } from '@/store/actions'
 import { withRouter } from "react-router";
 
 import CurContext from '@/provider/cur-context';
@@ -77,7 +77,7 @@ class ComContent extends Component {
 	}
 
 	getListAndSet = (params) => {
-		const { pageIndex: sPageIndex, pageSize: sPageSize, setUsername, history } = this.props;
+		const { pageIndex: sPageIndex, pageSize: sPageSize } = this.props;
 
 		const { pageIndex=sPageIndex, pageSize=sPageSize, isTotal } = params;
 		// console.log(catalog)
@@ -89,10 +89,7 @@ class ComContent extends Component {
 			isTotal,
 			...this.getsys()
 		}).catch(res => {
-      if (res.resultCode === LOG_OVERDUE_CODE) {
-        setUsername('')
-        history.replace('/')
-      }
+      eventBus.emit('logout#toHome', res)
     })
 	}
 	
@@ -161,9 +158,9 @@ const mapDispatchToProps = dispatch => {
   	getSiteList (params) {
 			return dispatch(getSiteList(params))
   	},
-  	setUsername (params) {
+  	/*setUsername (params) {
 			return dispatch(setUsername(params))
-  	},
+  	},*/
   
   };
 };

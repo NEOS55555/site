@@ -8,8 +8,8 @@ class RecomdList extends Component {
     list: []
   }
   componentDidUpdate (prevProps) {
-    const { siteId: prevSiteId, catalog: prevCatalog } = prevProps;
-    const { siteId, catalog } = this.props;
+    const { catalog: prevCatalog } = prevProps;
+    const { catalog } = this.props;
     if (prevCatalog !== catalog) {
       this.getRecomdList();
       // console.log(siteId, catalog)

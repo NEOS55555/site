@@ -71,7 +71,7 @@ class Login extends Component {
 		}
 		this.setState({confirmLoading: true})
 		login({name, password, code: code.toString().toLowerCase()}).then(data => {
-			// console.log(res)
+			this.setState({confirmLoading: false})
 			const { result, resultMessage } = data;
 			const { _id, token, name: user_name, is_async, check_reply_num } = result;
 
@@ -97,8 +97,9 @@ class Login extends Component {
 				
 			}, 30)
 		}).catch(res => {
+			this.setState({confirmLoading: false})
 			this.refreshCode()
-		}).finally(res => this.setState({confirmLoading: false}))
+		})
 	};
 	
 

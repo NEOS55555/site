@@ -5,7 +5,7 @@ import './CommentCtn.scss'
 import CommentItem from '../CommentItem'
 import CommentReplyCtn from '../CommentReplyCtn'
 import { connect } from 'react-redux'
-import { MAX_COMMIT_LEN, LOG_OVERDUE_CODE } from '@/common/constant'
+import { MAX_COMMIT_LEN } from '@/common/constant'
 // 把UPDATE_DATA 修改一下 改成函数，不要到处写
 import BraftEditor from 'braft-editor'
 import { ContentUtils } from 'braft-utils'
@@ -66,13 +66,10 @@ class CommentCtn extends Component {
     reportCommit({site_id: siteId, content: commitContent.toText()}).then(res => {
       this.setState({
         commitContent: ContentUtils.clear(this.state.commitContent),
-        commitList: [...commitList, res.result]
+        commitList: [...commitList, res.result],
+        confirmLoading: false
       })
-    }).catch(res => {
-      if (res.resultCode === LOG_OVERDUE_CODE) {
-        this.props.setUsername('')
-      }
-    }).finally(() => this.setState({ confirmLoading: false }))
+    }).catch(() => this.setState({ confirmLoading: false }))
     // console.log(siteId)
   }
 
