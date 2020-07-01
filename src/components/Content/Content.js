@@ -39,9 +39,9 @@ class Content extends PureComponent {
 								  		total={total} current={current} pageSize={pageSize}
 									  	showQuickJumper 
 				              size="small" 
-				              // showSizeChanger  
+				              // showSizeChanger={false} 
+									  	// pageSizeOptions={['5', '10', '15']}
 									  	onChange={onChange} 
-									  	pageSizeOptions={['5', '10', '15']}
 									  	onShowSizeChange={onShowSizeChange} 
 									  	// showTotal={total => `共 ${total} 条数据`} 
 								  	/>

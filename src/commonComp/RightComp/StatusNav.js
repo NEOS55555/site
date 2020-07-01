@@ -32,7 +32,7 @@ class StatusNav extends Component {
           selectedKeys={[status+'']}
           // onOpenChange={this.onOpenChange}
           onSelect={this.onSelect}
-          style={{ width: 256 }}
+          // style={{ width: 256 }}
         >
         	{
         		[{id: -1, name: '全部'}, ...statusArr].map(({id, name}) => <Menu.Item key={id}>{name}</Menu.Item>)

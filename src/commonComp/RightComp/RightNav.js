@@ -46,7 +46,7 @@ class RightNav extends Component {
           selectedKeys={[catalog]}
           // onOpenChange={this.onOpenChange}
           // onSelect={onSelect}
-          style={{ width: 256 }}
+          // style={{ width: 256 }}
         >
         	{
         		catalogListSite.map(({_id, name, total}) => 

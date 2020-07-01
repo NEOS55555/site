@@ -65,7 +65,7 @@ class CommentReplyCtn extends Component {
     const { _id: commit_id, site_id } = this.props.commitData;
     const { commitContent, replyList, to_user_id, to_user_name, replyTotal } = this.state;
     this.setState({confirmLoading: true})
-    console.log(to_user_id)
+    // console.log(to_user_id)
     if (commitContent.isEmpty()) {
       return;
     }

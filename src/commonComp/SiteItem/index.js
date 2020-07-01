@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import DelIcon from './Icons/DelIcon'
 import { Link } from "react-router-dom";
 // import eventBus from '@/common/eventBus'
+// import showImg from '@/commonComp/ShowImg'
 
 
 class SiteItem extends Component {
@@ -164,14 +165,16 @@ class SiteItem extends Component {
 					<p className="sit-sub-text">hot {views}°C</p>
 					<div className="rich-head">
 						<Spin spinning={isRating} size="small" >
-							<span>评分: </span><Rate disabled={rate.isRated} value={getCeil5(rateval)} allowHalf onChange={this.rateChange} />
+							<span>评分: </span>
+							<Rate disabled={rate.isRated} value={getCeil5(rateval)} allowHalf onChange={this.rateChange} />
+							{rateval !== 0 && <span className="txt">{rateval.toFixed(2)}星</span>}
 		        </Spin>
 					</div>
 					<div className="rich-content">
 						<div className="rich-content-text" dangerouslySetInnerHTML={{__html: desc}} ></div>
 						<div className="rich-content-cover">
 							<div className="rich-content-cover-inner">
-								{img && <img src={imgurl + img} alt="网页展示图"/>}
+								{img && <img onClick={() => window.open(imgurl + img)} src={imgurl + img} alt="网页展示图"/>}
 							</div>
 						</div>
 						<div className="rich-footer">

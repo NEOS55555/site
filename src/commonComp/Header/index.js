@@ -105,6 +105,11 @@ class Header extends Component {
         <Menu.Item><Link onClick={this.routerClick} to="/collect">我的收藏</Link></Menu.Item>
         <Menu.Item><Link onClick={this.routerClick} to="/replyme">回复我的{ check_reply_num === 0 ? '' : `(${check_reply_num})`}</Link></Menu.Item>
         <Menu.Item><Link onClick={this.routerClick} to={AccountNavRoute[0].path} >账号管理</Link></Menu.Item>
+        {
+          is_async && <Menu.Item className="async-li"><Link onClick={this.routerClick} to="/catalogmng">分类管理</Link></Menu.Item>}
+            
+          {is_async && <Menu.Item className="async-li"><Link onClick={this.routerClick} to="/noticemng">公告管理</Link></Menu.Item>}
+        
         <Menu.Item><Link to="/system/0">页面管理</Link></Menu.Item>
         <Menu.Item><span className="link-a" onClick={this.logout}>退出</span></Menu.Item>
       </Menu>
@@ -122,9 +127,9 @@ class Header extends Component {
               {
                 is_async && 
                 <Fragment>
-                  <li><Link onClick={this.routerClick}  to="/catalogmng" >分类管理</Link></li>
-                  <li><Link onClick={this.routerClick}  to="/noticemng" >公告管理</Link></li>
-                  <li><Link onClick={this.routerClick}  to="/system/0" >页面管理</Link></li>
+                  <li className="async-li"><Link onClick={this.routerClick}  to="/catalogmng" >分类管理</Link></li>
+                  <li className="async-li"><Link onClick={this.routerClick}  to="/noticemng" >公告管理</Link></li>
+                  <li className="async-li"><Link to="/system/0" >页面管理</Link></li>
                 </Fragment>
               }
             </ul>

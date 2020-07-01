@@ -42,6 +42,13 @@
 		.ant-rate-star:not(:last-child) {
 	    margin-right: 3px;
 		}
+		.txt {
+			margin-left: 5px;
+			&::before {
+				content: '←';
+				margin-right: 5px;
+			}
+		}
 	}
 	.rich-content {
 		/*cursor: pointer;*/
@@ -54,6 +61,7 @@
 				justify-content: center;
 				img {
 					max-width: 40%;
+					cursor: zoom-in;
 				}
 
 			}

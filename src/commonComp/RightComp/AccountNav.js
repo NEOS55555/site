@@ -18,7 +18,7 @@ class AccountNav extends Component {
           // selectedKeys={[match.params.catalog]}
           // onOpenChange={this.onOpenChange}
           // onSelect={onSelect}
-          style={{ width: 256 }}
+          // style={{ width: 256 }}
         >
         	{
         		AccountNavRoute.map(({path, name}, index) => <Menu.Item key={index}><Link to={path} >{name}</Link></Menu.Item>)

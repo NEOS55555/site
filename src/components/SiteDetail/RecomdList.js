@@ -15,9 +15,9 @@ class RecomdList extends Component {
       // console.log(siteId, catalog)
     }
   }
-  componentDidMount () {
+  /*componentDidMount () {
     // this.getRecomdList();
-  }
+  }*/
   getRecomdList = () => {
     const { catalog } = this.props;
     getRecomdList({catalog}).then(res => {

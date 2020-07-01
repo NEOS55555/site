@@ -44,7 +44,7 @@ class Top10Site extends Component {
           // defaultSelectedKeys={this.props.defaultSelectedKeys}
           // onOpenChange={this.onOpenChange}
           // onSelect={onSelect}
-          style={{ width: 256 }}
+          // style={{ width: 256 }}
         >
         	{
         		top10List.map(({_id, name, url}) => 

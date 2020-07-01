@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import 'cropperjs/dist/cropper.css';
 import 'braft-editor/dist/index.css'
 import './App.scss';
+import './media.scss';
 
 import { getIP, updateComData } from '@/store/actions'
 import Routers from '@/common/Routers'

@@ -66,7 +66,7 @@ export const siteErrorText = {
 }
 
 // 尺寸不小于200 x 200，
-const MAX_IMG_M = 2;
+const MAX_IMG_M = 1;
 const M = 1024 * 1024
 export const siteImgTip = `点击图片进行添加，大小不超过${MAX_IMG_M}M`
 export const MAX_IMG_SIZE = M * MAX_IMG_M;
