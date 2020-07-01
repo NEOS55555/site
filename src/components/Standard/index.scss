@@ -1,0 +1,16 @@
+.standard-wrapper {
+	.title {
+		color: orange;
+	}	
+	.std-box {
+		margin-bottom: 20px;
+	}
+	.std-desc {
+		p:nth-child(2n+1) {
+			margin-bottom: 10px;
+		}
+	}
+}
+.highlight {
+	color: $hoverBlue;
+}

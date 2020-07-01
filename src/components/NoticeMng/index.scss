@@ -1,0 +1,31 @@
+.notice-container {
+	color: $fontColor;
+
+	.notice-list {
+		ul {
+			li {
+				padding: 10px 20px;
+				box-shadow: 1px 1px 11px $shadowDarkColor;
+				&:not(:last-child) {
+					margin-bottom: 10px;
+				}
+
+				.time {
+					color: #ccc;
+					font-size: 12px;
+					display: flex;
+					justify-content: space-between;
+					.icons {
+						font-size: 15px;
+						.icon {
+							&:not(:last-child) {
+								margin-right: 5px;
+							}
+							cursor: pointer;
+						}
+					}
+				}
+			}
+		}
+	}
+}
