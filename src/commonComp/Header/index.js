@@ -122,7 +122,7 @@ class Header extends Component {
             <Link className="logo" to="/"><img src={logo} alt="首页"/></Link>
             <ul className="top-nav-list">
               <li><Link onClick={this.routerClick} to="/">首页</Link></li>
-              <li><Link onClick={this.routerClick} to="/feedback">用户体验</Link></li>
+              <li><Link onClick={this.routerClick} to="/feedback">留言板</Link></li>
               <li><Link onClick={this.routerClick} to="/standard">收录标准</Link></li>
               {
                 is_async && 

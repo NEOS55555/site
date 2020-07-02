@@ -5,6 +5,7 @@ import { Pagination } from 'antd'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import { FEEDBACK_SITEID } from '@/common/constant'
+import Empty from '@/commonComp/Empty'
 import './MessageMng.scss'
 import eventBus from '@/common/eventBus'
 
@@ -49,40 +50,43 @@ class MessageMng extends Component {
 
     return (
       <div className="message-wrapper main-content">
-        <div className="message-container">
-          <div className="message-list">
-            <ul>
-              {
-                list.map(it => {
-                  const isFeedback = it.site_id === FEEDBACK_SITEID;
+        {
+          list.length === 0 ? <Empty /> : 
+            <div className="message-container">
+              <div className="message-list">
+                <ul>
+                  {
+                    list.map(it => {
+                      const isFeedback = it.site_id === FEEDBACK_SITEID;
 
-                  const linkurl = isFeedback ? '/feedback' : '/sitedetail/' + it.site_id
+                      const linkurl = isFeedback ? '/feedback' : '/sitedetail/' + it.site_id
 
-                  return <li key={it._id}>
-                    <div className="rich-left">
-                      <Link to={linkurl} className="rich-ctn" >
-                        <div className="message-user" >{it.user_name}：</div>
-                        <div className="message-content" dangerouslySetInnerHTML={{__html: it.content}} ></div>
-                      </Link>
-                      <div className="resp-subject">
-                        回复我的页面：<Link to={linkurl} >{isFeedback ? '用户反馈' : it.site_name}</Link>
-                      </div>
-                    </div>
-                    <div className="rich-right">
-                      <span className="time">{it.create_time}</span>
-                    </div>
-                  </li>
-                })
-              }
-            </ul>
-          </div>
-          <Pagination 
-            total={total} current={pageIndex} pageSize={10}
-            showQuickJumper 
-            size="small" 
-            onChange={this.onChange} 
-          />
-        </div>
+                      return <li key={it._id}>
+                        <div className="rich-left">
+                          <Link to={linkurl} className="rich-ctn" >
+                            <div className="message-user" >{it.user_name}：</div>
+                            <div className="message-content" dangerouslySetInnerHTML={{__html: it.content}} ></div>
+                          </Link>
+                          <div className="resp-subject">
+                            回复我的页面：<Link to={linkurl} >{isFeedback ? '用户反馈' : it.site_name}</Link>
+                          </div>
+                        </div>
+                        <div className="rich-right">
+                          <span className="time">{it.create_time}</span>
+                        </div>
+                      </li>
+                    })
+                  }
+                </ul>
+              </div>
+              <Pagination 
+                total={total} current={pageIndex} pageSize={10}
+                showQuickJumper 
+                size="small" 
+                onChange={this.onChange} 
+              />
+            </div>
+        }
       </div>
 	  );
 	}
